@@ -6,12 +6,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mhschmieder</groupId>
-	<artifactId>fxdxftoolkit</artifactId>
+	<artifactId>fxdxfparser</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>OfficeToolkit</name>
-	<url>https://github.com/mhschmieder/pdftoolkit</url>
+	<name>FxDxfParser</name>
+	<url>https://github.com/mhschmieder/fxdxfparser</url>
 	<description>DXF Parser that converts to JavaFX Scene Graph Nodes</description>
 
 	<licenses>
@@ -23,9 +23,9 @@
 	</licenses>
 
 	<scm>
-		<url>https://github.com/mhschmieder/fxdxftoolkit</url>
-		<connection>scm:git:git://github.com/mhschmieder/fxdxftoolkit.git</connection>
-		<developerConnection>scm:git:git@github.com:mhschmieder/fxdxftoolkit.git</developerConnection>
+		<url>https://github.com/mhschmieder/fxdxfparser</url>
+		<connection>scm:git:git://github.com/mhschmieder/fxdxfparser.git</connection>
+		<developerConnection>scm:git:git@github.com:mhschmieder/fxdxfparser.git</developerConnection>
 	</scm>
 
 	<developers>
