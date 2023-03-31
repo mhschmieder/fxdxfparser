@@ -1,4 +1,4 @@
-# fxdxftoolkit
+# fxdxfparser
 DXF Parser that projects to 2D for JavaFX Scene Graph
 
 This is a long-overdue publication of a JavaFX conversion of a Graphics2D extrapolation of a long-defunct graduate school project by a Spanish technical student (unreachable for years even when using a Spanish co-worker to try to track him down) which was originally written for the old discontinued Java3D toolkit.
