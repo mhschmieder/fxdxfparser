@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
@@ -69,9 +70,9 @@ public class DxfPoint extends DxfEntity {
 
     @Override
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _x = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _y = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _z = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _x = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _y = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _z = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
     }
 
 }// class DxfPoint

@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.entity;
 
 import java.util.Collection;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -114,20 +115,20 @@ public class DxfArc extends DxfEntity {
     @Override
     @SuppressWarnings("nls")
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _thickness = Double.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
 
-        _centerX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _centerZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _radius = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
+        _radius = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
 
-        _startAngle = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE50 ) );
-        _endAngle = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE51 ) );
+        _startAngle = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE50 ) );
+        _endAngle = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE51 ) );
 
-        _extrusionX = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
+        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
+        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
     }
 
 }// class DxfArc

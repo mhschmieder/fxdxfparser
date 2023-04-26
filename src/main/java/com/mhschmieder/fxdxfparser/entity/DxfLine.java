@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.entity;
 
 import java.util.Collection;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -100,19 +101,19 @@ public class DxfLine extends DxfEntity {
     @Override
     @SuppressWarnings("nls")
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _thickness = Double.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
 
-        _startX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _startY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _startZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _startX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _startY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _startZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _endX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _endY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _endZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
+        _endX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
+        _endY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
+        _endZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
 
-        _extrusionX = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
+        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
+        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
     }
 
 }// class DxfLine

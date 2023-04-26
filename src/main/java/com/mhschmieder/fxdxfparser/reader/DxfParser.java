@@ -519,21 +519,21 @@ public class DxfParser {
                 break;
             case "$LTSCALE":
                 pair = it.next();
-                final double ltscale = Double.parseDouble( pair.getValue() );
+                final double ltscale = NumberUtilities.parseDouble( pair.getValue() );
                 _dxfDocument.setGlobalLinetypeScale( ltscale );
                 break;
             case "$LIMMIN":
                 pair = it.next();
-                final double limitsMinX = Double.parseDouble( pair.getValue() );
+                final double limitsMinX = NumberUtilities.parseDouble( pair.getValue() );
                 pair = it.next();
-                final double limitsMinY = Double.parseDouble( pair.getValue() );
+                final double limitsMinY = NumberUtilities.parseDouble( pair.getValue() );
                 _dxfDocument.setLimitsMin( limitsMinX, limitsMinY );
                 break;
             case "$LIMMAX":
                 pair = it.next();
-                final double limitsMaxX = Double.parseDouble( pair.getValue() );
+                final double limitsMaxX = NumberUtilities.parseDouble( pair.getValue() );
                 pair = it.next();
-                final double limitsMaxY = Double.parseDouble( pair.getValue() );
+                final double limitsMaxY = NumberUtilities.parseDouble( pair.getValue() );
                 _dxfDocument.setLimitsMax( limitsMaxX, limitsMaxY );
                 break;
             default:

@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.entity;
 
 import java.util.Collection;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -99,13 +100,13 @@ public class DxfRay extends DxfEntity {
 
     @Override
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _basePointX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _basePointY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _basePointZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _basePointX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _basePointY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _basePointZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _directionX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _directionY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _directionZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
+        _directionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
+        _directionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
+        _directionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
     }
 
 }// class DxfRay

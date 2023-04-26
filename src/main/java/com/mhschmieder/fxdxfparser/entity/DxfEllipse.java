@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.entity;
 
 import org.apache.commons.math3.util.FastMath;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.EllipticalArc2D;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
@@ -240,22 +241,22 @@ public class DxfEllipse extends DxfEntity {
     @Override
     @SuppressWarnings("nls")
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _centerX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _centerZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _endMajorAxisOffsetX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _endMajorAxisOffsetY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _endMajorAxisOffsetZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
+        _endMajorAxisOffsetX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
+        _endMajorAxisOffsetY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
+        _endMajorAxisOffsetZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
 
-        _normalX = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _normalY = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _normalZ = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _normalX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
+        _normalY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
+        _normalZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
 
-        _ratioMinorAxis = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
+        _ratioMinorAxis = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
 
-        _startAngle = FastMath.toDegrees( Double.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) ) );
-        _endAngle = FastMath.toDegrees( Double.parseDouble( pc.getValue( DxfGroupCodes.CODE42 ) ) );
+        _startAngle = FastMath.toDegrees( NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) ) );
+        _endAngle = FastMath.toDegrees( NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42 ) ) );
     }
 
 }// class DxfEllipse

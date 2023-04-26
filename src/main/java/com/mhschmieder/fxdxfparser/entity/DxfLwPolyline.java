@@ -151,28 +151,28 @@ public class DxfLwPolyline extends DxfEntity {
                            new PolyVertex( 0.0d, 0.0d, 0.0d, _constantWidth, _constantWidth, 0.0d );
                 _polyVertices.add( polyVertex );
 
-                polyVertex._x = Double.parseDouble( pair.getValue() );
+                polyVertex._x = NumberUtilities.parseDouble( pair.getValue() );
                 break;
             case DxfGroupCodes.CODE20:
-                polyVertex._y = Double.parseDouble( pair.getValue() );
+                polyVertex._y = NumberUtilities.parseDouble( pair.getValue() );
                 break;
             case DxfGroupCodes.CODE30:
-                polyVertex._z = Double.parseDouble( pair.getValue() );
+                polyVertex._z = NumberUtilities.parseDouble( pair.getValue() );
                 break;
             case DxfGroupCodes.CODE40:
                 if ( _constantWidth <= 0.0d ) {
-                    polyVertex._startWidth = Double.parseDouble( pair.getValue() );
+                    polyVertex._startWidth = NumberUtilities.parseDouble( pair.getValue() );
                     _hasWidth |= polyVertex._startWidth > 0.0d;
                 }
                 break;
             case DxfGroupCodes.CODE41:
                 if ( _constantWidth <= 0.0d ) {
-                    polyVertex._endWidth = Double.parseDouble( pair.getValue() );
+                    polyVertex._endWidth = NumberUtilities.parseDouble( pair.getValue() );
                     _hasWidth |= polyVertex._endWidth > 0.0d;
                 }
                 break;
             case DxfGroupCodes.CODE42:
-                polyVertex._bulge = Double.parseDouble( pair.getValue() );
+                polyVertex._bulge = NumberUtilities.parseDouble( pair.getValue() );
                 break;
             default:
                 break;

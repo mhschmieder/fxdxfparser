@@ -33,6 +33,7 @@ package com.mhschmieder.fxdxfparser.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
@@ -111,27 +112,27 @@ public class DxfSolid extends DxfEntity {
         _yCoordinates = new double[ NUMBER_OF_VERTICES ];
         _zCoordinates = new double[ NUMBER_OF_VERTICES ];
 
-        _xCoordinates[ 0 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _yCoordinates[ 0 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _zCoordinates[ 0 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _xCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _yCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _zCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _xCoordinates[ 1 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _yCoordinates[ 1 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _zCoordinates[ 1 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
+        _xCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
+        _yCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
+        _zCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
 
-        _xCoordinates[ 2 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
-        _yCoordinates[ 2 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
-        _zCoordinates[ 2 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE32 ) );
+        _xCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
+        _yCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
+        _zCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE32 ) );
 
-        _xCoordinates[ 3 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE13 ) );
-        _yCoordinates[ 3 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE23 ) );
-        _zCoordinates[ 3 ] = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE33 ) );
+        _xCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE13 ) );
+        _yCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE23 ) );
+        _zCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE33 ) );
 
-        _thickness = Double.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
 
-        _extrusionX = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
+        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
+        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
     }
 
 }// class DxfSolid

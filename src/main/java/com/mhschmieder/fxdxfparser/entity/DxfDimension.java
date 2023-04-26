@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -85,11 +86,11 @@ public class DxfDimension extends DxfEntity {
     protected void parseEntityProperties( final DxfPairContainer pc ) {
         final DxfPairContainer pcdim = pc.getSubclassPairs( "AcDbDimension" );
 
-        _defPointX = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE10 ) );
-        _defPointY = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE20 ) );
+        _defPointX = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE10 ) );
+        _defPointY = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE20 ) );
 
-        _textPointX = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE11 ) );
-        _textPointY = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE21 ) );
+        _textPointX = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE11 ) );
+        _textPointY = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE21 ) );
 
         // NOTE: This is commented out, because it causes run-time exceptions
         // due to not parsing correctly. And as it isn't used anyway, it causes
@@ -100,9 +101,9 @@ public class DxfDimension extends DxfEntity {
         _text = pcdim.getValue( DxfGroupCodes.CODE1 );
         _block = pcdim.getValue( DxfGroupCodes.CODE2 );
         _dimStyle = pcdim.getValue( DxfGroupCodes.CODE3 );
-        _actualMeasurement = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE42, "0" ) );
-        _textRotation = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE53, "0" ) );
-        _horizontalDirection = Double.parseDouble( pcdim.getValue( DxfGroupCodes.CODE51, "0" ) );
+        _actualMeasurement = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE42, "0" ) );
+        _textRotation = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE53, "0" ) );
+        _horizontalDirection = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE51, "0" ) );
     }
 
 }// class DxfDimension

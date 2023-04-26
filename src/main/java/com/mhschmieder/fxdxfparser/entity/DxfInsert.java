@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.loader.DxfEntityContainer;
@@ -112,14 +113,14 @@ public class DxfInsert extends DxfEntity implements DxfEntityContainer {
 
         _blockName = pc.getValue( DxfGroupCodes.CODE2 );
 
-        final double rotationAngleDegrees = Double
+        final double rotationAngleDegrees = NumberUtilities
                 .parseDouble( pc.getValue( DxfGroupCodes.CODE50, "0" ) );
 
-        final double insertX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        final double insertY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        final double insertX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        final double insertY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
 
-        final double scaleX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "1" ) );
-        final double scaleY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE42, "1" ) );
+        final double scaleX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "1" ) );
+        final double scaleY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42, "1" ) );
 
         // Cambio sentido
         final Rotate rotate = new Rotate( rotationAngleDegrees % 360d );
