@@ -33,6 +33,7 @@ package com.mhschmieder.fxdxfparser.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
@@ -152,10 +153,10 @@ public class DxfPolygonMesh extends DxfPolyline {
     protected void parseEntityProperties( final DxfPairContainer pc ) {
         super.parseEntityProperties( pc );
 
-        _mCount = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE71 ) );
-        _nCount = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE72 ) );
-        _mDensity = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE73, "0" ) );
-        _nDensity = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE74, "0" ) );
+        _mCount = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
+        _nCount = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72 ) );
+        _mDensity = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73, "0" ) );
+        _nDensity = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74, "0" ) );
     }
 
 }// class DxfPolygonMesh

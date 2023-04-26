@@ -33,5 +33,6 @@
 			<attribute name="maven.scope" value="compile"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/commonstoolkit"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

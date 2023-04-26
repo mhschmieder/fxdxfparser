@@ -33,6 +33,7 @@ package com.mhschmieder.fxdxfparser.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
@@ -140,8 +141,8 @@ public class DxfPolyFaceMesh extends DxfPolyline {
     protected void parseEntityProperties( final DxfPairContainer pc ) {
         super.parseEntityProperties( pc );
 
-        _numberOfVertices = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE71 ) );
-        _numberOfFaces = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE72 ) );
+        _numberOfVertices = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
+        _numberOfFaces = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72 ) );
     }
 
 }// class DxfPolyFaceMesh

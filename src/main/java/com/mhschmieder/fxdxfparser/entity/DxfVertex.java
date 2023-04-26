@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.ArcUtilities;
 import com.mhschmieder.fxdxfparser.geometry.EllipticalArc2D;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -97,11 +98,11 @@ public class DxfVertex extends DxfPoint {
     protected final void parseEntityProperties( final DxfPairContainer pc ) {
         super.parseEntityProperties( pc );
 
-        _startWidth = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
-        _endWidth = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "0" ) );
-        _bulge = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE42, "0" ) );
+        _startWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
+        _endWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "0" ) );
+        _bulge = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42, "0" ) );
 
-        _flags = Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+        _flags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
     }
 
 }// class DxfVertex

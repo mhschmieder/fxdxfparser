@@ -33,6 +33,7 @@ package com.mhschmieder.fxdxfparser.reader;
 import java.util.Iterator;
 import java.util.Locale;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.entity.DxfArc;
 import com.mhschmieder.fxdxfparser.entity.DxfCircle;
 import com.mhschmieder.fxdxfparser.entity.DxfDimension;
@@ -281,7 +282,7 @@ public class DxfParser {
                 // Polyline.
                 break;
             case POLYLINE:
-                final int flags = Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+                final int flags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
                 if ( ( flags & DxfPolyline.FLAG_POLYGON_MESH ) != 0 ) {
                     newent = new DxfPolygonMesh( _dxfDocument,
                                                  pc,
@@ -347,7 +348,7 @@ public class DxfParser {
             case UNRECOGNIZED_ENTITY:
                 break;
             case VERTEX:
-                final int test = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE71, "0" ) );
+                final int test = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71, "0" ) );
                 if ( test == 0 ) {
                     newent = new DxfVertex( _dxfDocument, pc, entityType, _ignorePaperSpace );
                 }
@@ -511,7 +512,7 @@ public class DxfParser {
                 break;
             case "$INSUNITS":
                 pair = it.next();
-                final int insunits = Integer.parseInt( pair.getValue() );
+                final int insunits = NumberUtilities.parseInteger( pair.getValue() );
                 final DxfDistanceUnit dxfDistanceUnit = DxfDistanceUnit
                         .indexToDistanceUnit( insunits );
                 _dxfDocument.setDistanceUnit( dxfDistanceUnit );
@@ -549,23 +550,23 @@ public class DxfParser {
             break;
 
         case LAYER:
-            flags = Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+            flags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
             final String lyname = pc.getValue( DxfGroupCodes.CODE2 );
             final String lineType = pc.getValue( DxfGroupCodes.LINE_TYPE );
             // colorNumber : negativo si Layer Off
-            final int colorNumber = Integer.parseInt( pc.getValue( DxfGroupCodes.COLOR ) );
+            final int colorNumber = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.COLOR ) );
             _dxfDocument.addLayer( lyname, flags, colorNumber, lineType );
             break;
 
         case LTYPE:
             // TODO: Check Code 72 for "is scaled to fit".
-            flags = Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
-            final int complexflags = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE74, "0" ) );
+            flags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+            final int complexflags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74, "0" ) );
             final String ltname = pc.getValue( DxfGroupCodes.CODE2 );
             final String desc = pc.getValue( DxfGroupCodes.CODE3, "" );
             final int nummberOfDashes =
-                                      Integer.parseInt( pc.getValue( DxfGroupCodes.CODE73, "0" ) );
-            final double patternLength = Double
+                    NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73, "0" ) );
+            final double patternLength = NumberUtilities
                     .parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
             double[] pattern = null;
             if ( nummberOfDashes > 0 ) {
@@ -576,7 +577,7 @@ public class DxfParser {
                 final int lastItemIndex = nummberOfDashes - 1;
                 while ( it.hasNext() ) {
                     if ( i <= lastItemIndex ) {
-                        pattern[ i++ ] = Double.parseDouble( it.next() );
+                        pattern[ i++ ] = NumberUtilities.parseDouble( it.next() );
                     }
                 }
             }

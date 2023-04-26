@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.entity;
 
 import java.util.ArrayList;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.geometry.PolyVertex;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
@@ -166,22 +167,22 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
     @Override
     @SuppressWarnings("nls")
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _elevationX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10, "0" ) );
-        _elevationY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20, "0" ) );
-        _elevationZ = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE30, "0" ) );
+        _elevationX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10, "0" ) );
+        _elevationY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20, "0" ) );
+        _elevationZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30, "0" ) );
 
-        _thickness = Double.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
 
-        _polyFlags = Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+        _polyFlags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
 
-        _startWidth = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
-        _endWidth = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "0" ) );
+        _startWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
+        _endWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "0" ) );
 
-        _surfaceType = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE75, "0" ) );
+        _surfaceType = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE75, "0" ) );
 
-        _extrusionX = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
+        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
+        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
     }
 
 }// class DxfPolyline

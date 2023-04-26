@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
@@ -95,19 +96,19 @@ public class DxfViewport extends DxfEntity {
 
     @Override
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _centerX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
 
-        _width = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
-        _height = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) );
+        _width = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
+        _height = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) );
 
-        _viewCenterX = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
-        _viewCenterY = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
+        _viewCenterX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
+        _viewCenterY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
 
-        _viewHeight = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE45 ) );
+        _viewHeight = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE45 ) );
         _viewWidth = ( _width * _viewHeight ) / _height;
 
-        _id = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE69 ) );
+        _id = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE69 ) );
 
         final double scaleFactor = _height / _viewHeight;
         _blockTransform = new Affine( new Scale( scaleFactor, scaleFactor ) );

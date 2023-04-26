@@ -34,6 +34,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Locale;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
+
 public class DxfReader {
 
     // Pila de un único par usada durante el analisis
@@ -265,7 +267,7 @@ public class DxfReader {
         try {
             String s = _inBuffer.readLine();
             _line++;
-            final int code = Integer.parseInt( s.trim() );
+            final int code = NumberUtilities.parseInteger( s.trim() );
             s = _inBuffer.readLine();
             _line++;
             s = s.trim();

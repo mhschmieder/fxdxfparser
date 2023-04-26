@@ -33,6 +33,7 @@ package com.mhschmieder.fxdxfparser.entity;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.geometry.PolyVertex;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
@@ -114,13 +115,13 @@ public class DxfLwPolyline extends DxfEntity {
     @Override
     @SuppressWarnings("nls")
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _numberOfVertices = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE90 ) );
+        _numberOfVertices = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE90 ) );
 
-        _polyFlags = Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+        _polyFlags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
 
-        _constantWidth = Double.parseDouble( pc.getValue( DxfGroupCodes.CODE43, "0" ) );
-        _elevation = Double.parseDouble( pc.getValue( DxfGroupCodes.ELEVATION, "0" ) );
-        _thickness = Double.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _constantWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE43, "0" ) );
+        _elevation = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.ELEVATION, "0" ) );
+        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
 
         // Dynamically determine whether the polyline has width.
         _hasWidth = _constantWidth > 0;
@@ -128,9 +129,9 @@ public class DxfLwPolyline extends DxfEntity {
         // Loop over the polyline vertices.
         parsePolylineVertices( pc );
 
-        _extrusionX = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = Double.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
+        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
+        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
     }
 
     protected final void parsePolylineVertices( final DxfPairContainer pc ) {

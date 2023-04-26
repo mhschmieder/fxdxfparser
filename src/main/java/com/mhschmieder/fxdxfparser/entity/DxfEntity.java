@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.loader.DxfColors;
@@ -264,8 +265,8 @@ public abstract class DxfEntity implements DxfDrawable {
             pce = pc;
         }
 
-        final boolean inPaperSpace = Integer
-                .parseInt( pce.getValue( DxfGroupCodes.PAPER_SPACE, "0" ) ) != 0;
+        final boolean inPaperSpace = NumberUtilities
+                .parseInteger( pce.getValue( DxfGroupCodes.PAPER_SPACE, "0" ) ) != 0;
         if ( inPaperSpace && ignorePaperSpace ) {
             return false;
         }
@@ -276,12 +277,12 @@ public abstract class DxfEntity implements DxfDrawable {
         initEntity( entityType,
                     inPaperSpace,
                     pce.getValue( DxfGroupCodes.LAYER ),
-                    Integer.parseInt( pce
+                    NumberUtilities.parseInteger( pce
                             .getValue( DxfGroupCodes.COLOR,
                                        String.valueOf( DxfColors.COLOR_BY_LAYER_INDEX ) ) ),
                     pce.getValue( DxfGroupCodes.LINE_TYPE, "BYLAYER" ),
-                    Double.parseDouble( pce.getValue( DxfGroupCodes.LINE_TYPE_SCALE, "1" ) ),
-                    Integer.parseInt( pce.getValue( DxfGroupCodes.VISIBLE, "0" ) ) != 0 );
+                    NumberUtilities.parseDouble( pce.getValue( DxfGroupCodes.LINE_TYPE_SCALE, "1" ) ),
+                    NumberUtilities.parseInteger( pce.getValue( DxfGroupCodes.VISIBLE, "0" ) ) != 0 );
 
         return true;
     }

@@ -30,6 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.FaceType;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
@@ -75,10 +76,10 @@ public class DxfFaceDef extends DxfEntity {
     @Override
     @SuppressWarnings("nls")
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        final int iv1 = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE71 ) );
-        final int iv2 = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE72, "-1" ) );
-        final int iv3 = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE73, "-1" ) );
-        final int iv4 = Integer.parseInt( pc.getValue( DxfGroupCodes.CODE74, "-1" ) );
+        final int iv1 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
+        final int iv2 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72, "-1" ) );
+        final int iv3 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73, "-1" ) );
+        final int iv4 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74, "-1" ) );
 
         if ( iv4 < 0 ) {
             if ( iv3 < 0 ) {

@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.loader;
 
 import java.util.ArrayList;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.entity.DxfEntity;
 import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -176,9 +177,9 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
 
     private void parse( final DxfPairContainer pc, final String name ) {
         initBlock( name,
-                   Double.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) ), // x
-                   Double.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) ), // y
-                   Integer.parseInt( pc.getValue( DxfGroupCodes.FLAGS ) ) ); // flags
+                   NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) ), // x
+                   NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) ), // y
+                   NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS ) ) ); // flags
     }
 
     public void setCurrentColor( final int color ) {
