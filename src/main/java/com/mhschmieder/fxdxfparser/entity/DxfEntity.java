@@ -279,7 +279,7 @@ public abstract class DxfEntity implements DxfDrawable {
                     pce.getValue( DxfGroupCodes.LAYER ),
                     NumberUtilities.parseInteger( pce
                             .getValue( DxfGroupCodes.COLOR,
-                                       String.valueOf( DxfColors.COLOR_BY_LAYER_INDEX ) ) ),
+                                       Integer.toString( DxfColors.COLOR_BY_LAYER_INDEX ) ) ),
                     pce.getValue( DxfGroupCodes.LINE_TYPE, "BYLAYER" ),
                     NumberUtilities.parseDouble( pce.getValue( DxfGroupCodes.LINE_TYPE_SCALE, "1" ) ),
                     NumberUtilities.parseInteger( pce.getValue( DxfGroupCodes.VISIBLE, "0" ) ) != 0 );
