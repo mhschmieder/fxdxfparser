@@ -31,7 +31,7 @@
 package com.mhschmieder.fxdxfparser.entity;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.loader.DxfEntityContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
@@ -73,7 +73,7 @@ public class DxfInsert extends DxfEntity implements DxfEntityContainer {
     }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         // Ignore blocks if they are on switched-off layers.
@@ -101,7 +101,7 @@ public class DxfInsert extends DxfEntity implements DxfEntityContainer {
         // block.setCurrentAttributes( _attributes );
 
         final double totalStrokeScale = _strokeScale * strokeScale;
-        block.convertToFxShapes( fxShapeContainer, resultante, totalStrokeScale );
+        block.convertToFxShapes( dxfShapeContainer, resultante, totalStrokeScale );
 
         return true;
     }

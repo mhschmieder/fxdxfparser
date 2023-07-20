@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.entity.DxfEntity;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
@@ -120,7 +120,7 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
     // }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer geometryContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer geometryContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         if ( ( _entities == null ) || _entities.isEmpty() ) {

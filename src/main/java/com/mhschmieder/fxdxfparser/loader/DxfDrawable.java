@@ -30,7 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.loader;
 
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 
 import javafx.scene.transform.Affine;
 
@@ -41,7 +41,7 @@ public interface DxfDrawable {
      * JavaFX 2D Shapes. This version of the method throws out the
      * z-coordinate rather than providing a projection plane.
      *
-     * @param fxShapeContainer
+     * @param dxfShapeContainer
      *            The Scene Graph Group container for all graphics required to
      *            represent this entity
      * @param transform
@@ -52,7 +52,7 @@ public interface DxfDrawable {
      *            line thickness
      * @return {@code true} if the shapes were successfully converted to JavaFX
      */
-    boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                final Affine transform,
                                final double strokeScale );
 

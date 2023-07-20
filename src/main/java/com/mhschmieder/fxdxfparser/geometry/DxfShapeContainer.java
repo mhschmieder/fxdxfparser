@@ -42,7 +42,7 @@ import javafx.scene.shape.StrokeType;
  * {@link Group}, for nested grouping and to avoid passing multiple JavaFX
  * Shapes to the {@link Group} base class.
  */
-public class FxShapeContainer extends Group implements ExplicitlyBounded {
+public class DxfShapeContainer extends Group implements ExplicitlyBounded {
 
     /** Stroke width, to be applied to the entire JavaFX Shapes Group. */
     protected final DoubleProperty strokeWidth;
@@ -56,7 +56,7 @@ public class FxShapeContainer extends Group implements ExplicitlyBounded {
     private final double           _maxY;
 
     // Default constructor, when bounds are not known.
-    public FxShapeContainer() {
+    public DxfShapeContainer() {
         // Always call the super-constructor first!
         this( 0.0d, 0.0d, 0.0d, 0.0d );
     }
@@ -65,10 +65,10 @@ public class FxShapeContainer extends Group implements ExplicitlyBounded {
     // NOTE: It is safer to invoke this constructor than to reset an existing
     // container and then set its bounds and units, as clearing a Group's
     // children may run on a deferred thread.
-    public FxShapeContainer( final double minX,
-                             final double minY,
-                             final double maxX,
-                             final double maxY ) {
+    public DxfShapeContainer( final double minX,
+                              final double minY,
+                              final double maxX,
+                              final double maxY ) {
         // Always call the superclass constructor first!
         super();
 
@@ -146,4 +146,4 @@ public class FxShapeContainer extends Group implements ExplicitlyBounded {
         return strokeWidth;
     }
 
-}// class FxShapeContainer
+}// class DxfShapeContainer

@@ -34,7 +34,7 @@ import org.apache.commons.math3.util.FastMath;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.EllipticalArc2D;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
 import com.mhschmieder.fxdxfparser.geometry.Vertex;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
@@ -83,7 +83,7 @@ public class DxfEllipse extends DxfEntity {
     }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         if ( !_dxfDoc.getLayer( _layer ).isLayerOn() ) {
@@ -113,7 +113,7 @@ public class DxfEllipse extends DxfEntity {
                     // Ellipse is an outline-only entity.
                     circle.setFill( null );
 
-                    fxShapeContainer.addShape( strokeScale, circle );
+                    dxfShapeContainer.addShape( strokeScale, circle );
 
                     return true;
                 }
@@ -146,7 +146,7 @@ public class DxfEllipse extends DxfEntity {
                     // Ellipse is an outline-only entity.
                     ellipse.setFill( null );
 
-                    fxShapeContainer.addShape( strokeScale, ellipse );
+                    dxfShapeContainer.addShape( strokeScale, ellipse );
 
                     return true;
                 }
@@ -200,7 +200,7 @@ public class DxfEllipse extends DxfEntity {
                 // Ellipse is an outline-only entity.
                 arc.setFill( null );
 
-                fxShapeContainer.addShape( strokeScale, arc );
+                dxfShapeContainer.addShape( strokeScale, arc );
 
                 return true;
             }
@@ -226,7 +226,7 @@ public class DxfEllipse extends DxfEntity {
         final Vertex[] vertices = arc.normalizeGradients( PolylineUtilities.NUMBER_OF_GRADS );
 
         final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale() * _lineTypeScale;
-        PolylineUtilities.convertToFxShapes( fxShapeContainer,
+        PolylineUtilities.convertToFxShapes( dxfShapeContainer,
                                              transform,
                                              strokeScale,
                                              color,

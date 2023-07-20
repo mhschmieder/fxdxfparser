@@ -31,7 +31,7 @@
 package com.mhschmieder.fxdxfparser.entity;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
@@ -58,7 +58,7 @@ public class DxfPoint extends DxfEntity {
     // determine the shape to use for the "displayable point", vs. assuming just
     // a point on screen (done as line with start=end).
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         // final Point2D point = new Point2D( _x, _y );

@@ -31,7 +31,7 @@
 package com.mhschmieder.fxdxfparser.entity;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
@@ -67,7 +67,7 @@ public class DxfDimension extends DxfEntity {
     }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         if ( !_dxfDoc.getLayer( _layer ).isLayerOn() ) {
@@ -76,7 +76,7 @@ public class DxfDimension extends DxfEntity {
 
         final DxfBlock blk = _dxfDoc.getBlock( _block );
         blk.setCurrentColor( getRealColorIndex() );
-        blk.convertToFxShapes( fxShapeContainer, transform, strokeScale );
+        blk.convertToFxShapes( dxfShapeContainer, transform, strokeScale );
 
         return true;
     }

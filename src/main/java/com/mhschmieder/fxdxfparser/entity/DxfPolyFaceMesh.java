@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
@@ -76,7 +76,7 @@ public class DxfPolyFaceMesh extends DxfPolyline {
     }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         if ( !_dxfDoc.getLayer( _layer ).isLayerOn() ) {
@@ -131,7 +131,7 @@ public class DxfPolyFaceMesh extends DxfPolyline {
             polygon.getTransforms().add( transform );
             polygon.setStroke( color );
 
-            fxShapeContainer.addShape( strokeScale, polygon );
+            dxfShapeContainer.addShape( strokeScale, polygon );
         }
 
         return true;

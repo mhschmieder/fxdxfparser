@@ -52,7 +52,7 @@ public final class PolylineUtilities {
         return ( ( pv1._x == pv2._x ) && ( pv1._y == pv2._y ) ) ? 0 : 1;
     }
 
-    public static void convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public static void convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                           final Affine transform,
                                           final double strokeScale,
                                           final Color color,
@@ -97,7 +97,7 @@ public final class PolylineUtilities {
                 dashArray.setAll( dashArrayCandidate );
             }
 
-            fxShapeContainer.addShape( strokeScale, polygon );
+            dxfShapeContainer.addShape( strokeScale, polygon );
         }
         else {
             final Polyline polyline = new Polyline();
@@ -114,11 +114,11 @@ public final class PolylineUtilities {
                 dashArray.setAll( dashArrayCandidate );
             }
 
-            fxShapeContainer.addShape( strokeScale, polyline );
+            dxfShapeContainer.addShape( strokeScale, polyline );
         }
     }
 
-    public static boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public static boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                              final Affine transform,
                                              final double strokeScale,
                                              final DxfEntity entity,
@@ -144,7 +144,7 @@ public final class PolylineUtilities {
             }
 
             final Vertex[] vertices = vlist.toArray( new Vertex[ vlist.size() ] );
-            convertToFxShapes( fxShapeContainer,
+            convertToFxShapes( dxfShapeContainer,
                                transform,
                                strokeScale,
                                color,
@@ -169,7 +169,7 @@ public final class PolylineUtilities {
 
         final Vertex[] vertices = vertarray.toArray( new Vertex[ vertarray.size() ] );
 
-        convertToFxShapes( fxShapeContainer,
+        convertToFxShapes( dxfShapeContainer,
                            transform,
                            strokeScale,
                            color,

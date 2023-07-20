@@ -31,7 +31,7 @@
 package com.mhschmieder.fxdxfparser.entity;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.loader.DxfColors;
 import com.mhschmieder.fxdxfparser.loader.DxfDrawable;
@@ -85,7 +85,7 @@ public abstract class DxfEntity implements DxfDrawable {
     }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         return false; // nada que dibujar

@@ -33,7 +33,7 @@ package com.mhschmieder.fxdxfparser.entity;
 import java.util.ArrayList;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.geometry.PolyVertex;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
 import com.mhschmieder.fxdxfparser.loader.DxfEntityContainer;
@@ -123,7 +123,7 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
     }
 
     @Override
-    public boolean convertToFxShapes( final FxShapeContainer fxShapeContainer,
+    public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
         if ( !_dxfDoc.getLayer( _layer ).isLayerOn() ) {
@@ -133,7 +133,7 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
             return false;
         }
 
-        final boolean succeeded = PolylineUtilities.convertToFxShapes( fxShapeContainer,
+        final boolean succeeded = PolylineUtilities.convertToFxShapes( dxfShapeContainer,
                                                                        transform,
                                                                        strokeScale,
                                                                        this,

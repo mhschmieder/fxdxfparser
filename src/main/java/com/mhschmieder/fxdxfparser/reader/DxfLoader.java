@@ -32,7 +32,8 @@ package com.mhschmieder.fxdxfparser.reader;
 
 import java.io.BufferedReader;
 
-import com.mhschmieder.fxdxfparser.geometry.FxShapeContainer;
+import com.mhschmieder.commonstoolkit.io.FileStatus;
+import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.physics.DxfDistanceUnit;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
@@ -65,16 +66,16 @@ public class DxfLoader {
      * z=0, using JavaFX Shapes as the target, hosted by a geometry container
      * that holds the generic JavaFX Shape conversions.
      *
-     * @param fxShapeContainer
+     * @param dxfShapeContainer
      *            The Geometry Container for the generic converted Shapes, as
      *            JavaFX Geometry Nodes
      */
-    public final void convertToFxShapes( final FxShapeContainer fxShapeContainer ) {
+    public final void convertToFxShapes( final DxfShapeContainer dxfShapeContainer ) {
         // Vectorize the entire Model Space block into generic shapes.
         final DxfBlock dxfBlock = _dxfDoc.getBlock( _currentBlock );
         final Affine defaultAffine = new Affine();
         final double defaultStrokeScale = 1.0d;
-        dxfBlock.convertToFxShapes( fxShapeContainer, defaultAffine, defaultStrokeScale );
+        dxfBlock.convertToFxShapes( dxfShapeContainer, defaultAffine, defaultStrokeScale );
 
         // Clear the now-redundant and unneeded Model Space Block.
         dxfBlock.clearBlock();
@@ -137,6 +138,50 @@ public class DxfLoader {
     }
 
     /**
+     * Parse the DXF Blocks and Entities from Model Space (ignore Paper Space).
+     * <p>
+     * NOTE: Actual conversion to JavaFX Shape Nodes is done later, after the
+     *  file stream has closed, as it is best not to leave file streams open for
+     *  very long.
+     *
+     * @param bufferedReader
+     *            The buffered reader that wraps the DXF file stream
+     * @param graphicsImportLoggingEnabled
+     *            Flag for whether the DXF Loader should log specifics of the
+     *            graphics import or not
+     * @return The File Status code, either to indicate errors in parsing
+     */
+    public FileStatus loadModelSpace( final BufferedReader bufferedReader,
+                                      final boolean graphicsImportLoggingEnabled ) {
+        try {
+            // Invoke the DXF Pre-loader, for Model Space only (i.e. ignore
+            // Paper Space, as we don't use it and thus it is wasteful).
+            setCurrentBlock( DxfDocument.MODEL_BLOCK );
+            loadDocument( bufferedReader, true, graphicsImportLoggingEnabled );
+            if ( !isDocumentValid() ) {
+                return FileStatus.READ_ERROR;
+            }
+        }
+        catch ( final OutOfMemoryError oome ) {
+            // NOTE: The DXF Parser now folds this into the general error
+            // handler, so that we have a better chance of recovering as well as
+            // reporting the details. So this error is unlikely to occur here.
+            oome.printStackTrace();
+            return FileStatus.OUT_OF_MEMORY_ERROR;
+        }
+        catch ( final DxfReaderException dre ) {
+            dre.printStackTrace();
+            return FileStatus.GRAPHICS_READ_ERROR;
+        }
+        catch ( final Exception e ) {
+            e.printStackTrace();
+            return FileStatus.GRAPHICS_READ_ERROR;
+        }
+
+        return FileStatus.OPENED;
+    }
+
+    /**
      * Carga el archivo DXF. Una vez invocado este método, se pueden acceder al
      * resto de métodos de esta clase, como getDocument.
      *
@@ -181,4 +226,4 @@ public class DxfLoader {
         _currentBlock = block;
     }
 
-}// class DxfLoader
+}
