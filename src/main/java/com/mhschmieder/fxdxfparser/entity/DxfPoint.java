@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * This file is part of the FxDxfToolkit Library
+ * This file is part of the FxDxfParser Library
  *
  * You should have received a copy of the MIT License along with the
- * FxDxfToolkit Library. If not, see <https://opensource.org/licenses/MIT>.
+ * FxDxfParser Library. If not, see <https://opensource.org/licenses/MIT>.
  *
- * Project: https://github.com/mhschmieder/fxdxftoolkit
+ * Project: https://github.com/mhschmieder/fxdxfparser
  */
 package com.mhschmieder.fxdxfparser.entity;
 
