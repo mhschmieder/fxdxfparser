@@ -33,8 +33,8 @@ package com.mhschmieder.fxdxfparser.entity;
 import org.apache.commons.math3.util.FastMath;
 
 import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
-import com.mhschmieder.fxdxfparser.geometry.EllipticalArc2D;
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
+import com.mhschmieder.fxdxfparser.geometry.EllipticalArc2D;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
 import com.mhschmieder.fxdxfparser.geometry.Vertex;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
