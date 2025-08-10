@@ -10,7 +10,7 @@
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>FxDxfParser</name>
+	<name>fxdxfparser</name>
 	<url>https://github.com/mhschmieder/fxdxfparser</url>
 	<description>DXF Parser that converts to JavaFX Scene Graph Nodes</description>
 
