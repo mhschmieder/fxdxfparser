@@ -30,11 +30,11 @@
  */
 package com.mhschmieder.fxdxfparser.reader;
 
+import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Locale;
-
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 
 public class DxfReader {
 

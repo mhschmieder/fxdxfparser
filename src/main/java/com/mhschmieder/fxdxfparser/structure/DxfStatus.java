@@ -30,9 +30,9 @@
  */
 package com.mhschmieder.fxdxfparser.structure;
 
-import java.util.HashMap;
-
 import com.mhschmieder.fxdxfparser.reader.EntityType;
+
+import java.util.HashMap;
 
 public class DxfStatus {
 

@@ -30,16 +30,15 @@
  */
 package com.mhschmieder.fxdxfparser.reader;
 
-import java.io.BufferedReader;
-
 import com.mhschmieder.commonstoolkit.io.FileStatus;
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.physics.DxfDistanceUnit;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.fxdxfparser.structure.DxfStatus;
-
 import javafx.scene.transform.Affine;
+
+import java.io.BufferedReader;
 
 /**
  * DxfLoader imports an AutoCAD DXF file into JavaFX as 2D Scene Graph Nodes.

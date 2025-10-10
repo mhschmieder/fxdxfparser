@@ -30,19 +30,18 @@
  */
 package com.mhschmieder.fxdxfparser.geometry;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.mhschmieder.fxdxfparser.entity.DxfEntity;
 import com.mhschmieder.fxdxfparser.entity.DxfVertex;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
-
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.transform.Affine;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public final class PolylineUtilities {
 

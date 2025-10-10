@@ -30,9 +30,9 @@
  */
 package com.mhschmieder.fxdxfparser.loader;
 
-import java.util.Locale;
-
 import org.apache.commons.math3.util.FastMath;
+
+import java.util.Locale;
 
 /**
  * DxfLayer representa la definición de una capa de Autocad. La información es

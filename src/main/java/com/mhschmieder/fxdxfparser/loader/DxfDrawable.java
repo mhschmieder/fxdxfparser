@@ -31,7 +31,6 @@
 package com.mhschmieder.fxdxfparser.loader;
 
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
-
 import javafx.scene.transform.Affine;
 
 public interface DxfDrawable {

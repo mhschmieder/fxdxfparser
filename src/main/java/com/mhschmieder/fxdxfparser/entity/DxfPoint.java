@@ -37,7 +37,6 @@ import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
-
 import javafx.scene.transform.Affine;
 
 public class DxfPoint extends DxfEntity {

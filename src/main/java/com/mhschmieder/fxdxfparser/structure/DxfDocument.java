@@ -30,18 +30,18 @@
  */
 package com.mhschmieder.fxdxfparser.structure;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-
 import com.mhschmieder.fxdxfparser.entity.DxfEntity;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.loader.DxfLayer;
 import com.mhschmieder.fxdxfparser.loader.DxfLineType;
 import com.mhschmieder.fxdxfparser.loader.PropertyOverriding;
 import com.mhschmieder.fxdxfparser.physics.DxfDistanceUnit;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 public final class DxfDocument {
 

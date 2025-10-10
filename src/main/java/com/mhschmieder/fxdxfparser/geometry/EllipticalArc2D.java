@@ -30,9 +30,8 @@
  */
 package com.mhschmieder.fxdxfparser.geometry;
 
-import org.apache.commons.math3.util.FastMath;
-
 import javafx.geometry.Point2D;
+import org.apache.commons.math3.util.FastMath;
 
 // Elliptical Arc in 2D space
 public final class EllipticalArc2D {
