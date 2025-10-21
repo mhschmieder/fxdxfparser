@@ -30,7 +30,6 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.ArcUtilities;
 import com.mhschmieder.fxdxfparser.geometry.EllipticalArc2D;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
@@ -38,6 +37,7 @@ import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
+import com.mhschmieder.jcommons.lang.NumberUtilities;
 
 public class DxfVertex extends DxfPoint {
 

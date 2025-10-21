@@ -30,13 +30,13 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
+import com.mhschmieder.jcommons.lang.NumberUtilities;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;

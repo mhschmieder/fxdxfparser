@@ -30,12 +30,12 @@
  */
 package com.mhschmieder.fxdxfparser.reader;
 
-import com.mhschmieder.commonstoolkit.io.FileStatus;
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.physics.DxfDistanceUnit;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.fxdxfparser.structure.DxfStatus;
+import com.mhschmieder.jcommons.io.FileStatus;
 import javafx.scene.transform.Affine;
 
 import java.io.BufferedReader;

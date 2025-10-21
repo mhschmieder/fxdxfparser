@@ -30,7 +30,6 @@
  */
 package com.mhschmieder.fxdxfparser.reader;
 
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.entity.DxfArc;
 import com.mhschmieder.fxdxfparser.entity.DxfCircle;
 import com.mhschmieder.fxdxfparser.entity.DxfDimension;
@@ -53,6 +52,7 @@ import com.mhschmieder.fxdxfparser.loader.DxfBlock;
 import com.mhschmieder.fxdxfparser.loader.DxfEntityContainer;
 import com.mhschmieder.fxdxfparser.physics.DxfDistanceUnit;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
+import com.mhschmieder.jcommons.lang.NumberUtilities;
 
 import java.util.Iterator;
 import java.util.Locale;

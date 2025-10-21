@@ -30,7 +30,6 @@
  */
 package com.mhschmieder.fxdxfparser.entity;
 
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.geometry.PolyVertex;
 import com.mhschmieder.fxdxfparser.geometry.PolylineUtilities;
@@ -40,6 +39,7 @@ import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
+import com.mhschmieder.jcommons.lang.NumberUtilities;
 import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;

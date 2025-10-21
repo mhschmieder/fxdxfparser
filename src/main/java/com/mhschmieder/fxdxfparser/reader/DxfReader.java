@@ -30,7 +30,7 @@
  */
 package com.mhschmieder.fxdxfparser.reader;
 
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
+import com.mhschmieder.jcommons.lang.NumberUtilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;

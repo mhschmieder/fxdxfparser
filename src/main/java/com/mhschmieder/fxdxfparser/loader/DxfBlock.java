@@ -30,12 +30,12 @@
  */
 package com.mhschmieder.fxdxfparser.loader;
 
-import com.mhschmieder.commonstoolkit.lang.NumberUtilities;
 import com.mhschmieder.fxdxfparser.entity.DxfEntity;
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
+import com.mhschmieder.jcommons.lang.NumberUtilities;
 import javafx.geometry.Point2D;
 import javafx.scene.transform.Affine;
 
