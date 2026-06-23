@@ -28,11 +28,14 @@
  *
  * Project: https://github.com/mhschmieder/fxdxfparser
  */
-/**
- * This package is the structural support for fxdxfparser.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
- */
-package com.mhschmieder.fxdxfparser.structure;
+module fxdxfparser {
+    exports com.mhschmieder.fxdxfparser.entity;
+    exports com.mhschmieder.fxdxfparser.geometry;
+    exports com.mhschmieder.fxdxfparser.loader;
+    exports com.mhschmieder.fxdxfparser.physics;
+    exports com.mhschmieder.fxdxfparser.reader;
+    exports com.mhschmieder.fxdxfparser.structure;
+    requires javafx.base;
+    requires javafx.graphics;
+    requires jcommons;
+}
