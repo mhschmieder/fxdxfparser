@@ -35,6 +35,7 @@ module fxdxfparser {
     exports com.mhschmieder.fxdxfparser.physics;
     exports com.mhschmieder.fxdxfparser.reader;
     exports com.mhschmieder.fxdxfparser.structure;
+    requires commons.math3;
     requires javafx.base;
     requires javafx.graphics;
     requires jcommons;

@@ -45,6 +45,18 @@
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-base</artifactId>
+			<version>25.0.1</version>
+			<classifier>win</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-graphics</artifactId>
+			<version>25.0.1</version>
+			<classifier>win</classifier>
+		</dependency>
         <dependency>
             <groupId>com.mhschmieder</groupId>
             <artifactId>jcommons</artifactId>
