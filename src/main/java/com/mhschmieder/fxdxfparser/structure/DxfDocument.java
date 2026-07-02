@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public final class DxfDocument {
 
@@ -61,7 +62,7 @@ public final class DxfDocument {
     public DxfBlock                        _paperSpace;
 
     // Lista de bloques
-    private HashMap< String, DxfBlock >    _blocks          = new HashMap<>( 50 );
+    private Map< String, DxfBlock > _blocks = new HashMap<>( 50 );
 
     // Distance Unit, referred to as Model Space Unit of Measurement.
     private DxfDistanceUnit                _distanceUnit;
@@ -90,7 +91,7 @@ public final class DxfDocument {
                                                                                0 );
 
     // Lista de entidades registradas
-    private HashMap< String, DxfEntity >   _refEntities     = new HashMap<>( 500 );
+    private Map< String, DxfEntity > _refEntities = new HashMap<>( 500 );
 
     // Última entidad añadida al documento
     private DxfEntity                      _lastEntity;
@@ -100,10 +101,10 @@ public final class DxfDocument {
 
     // =================== T A B L A S
     // ---- LAYERS
-    private HashMap< String, DxfLayer >    _tblLayer        = new HashMap<>( 10 );
+    private Map< String, DxfLayer > _tblLayer = new HashMap<>( 10 );
 
     // ---- LINE TYPES
-    private HashMap< String, DxfLineType > _tblLineType     = new HashMap<>( 10 );
+    private Map< String, DxfLineType > _tblLineType = new HashMap<>( 10 );
 
     public DxfDocument( final boolean logDxfStatus ) {
         // NOTE: Older DXF files do not contain this header field, and even
