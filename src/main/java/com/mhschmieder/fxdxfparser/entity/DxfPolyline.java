@@ -43,6 +43,7 @@ import com.mhschmieder.jcommons.lang.NumberUtilities;
 import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
 
@@ -75,9 +76,9 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
     protected int                     _vertexCount;
     protected boolean                 _hasWidth;
 
-    protected ArrayList< DxfVertex >  _controlPoints;
-    protected ArrayList< DxfVertex >  _vertices;
-    protected ArrayList< PolyVertex > _polyVertices;
+    protected List< DxfVertex > _controlPoints;
+    protected List< DxfVertex >  _vertices;
+    protected List< PolyVertex > _polyVertices;
 
     public DxfPolyline( final DxfDocument pdoc,
                         final DxfPairContainer pc,

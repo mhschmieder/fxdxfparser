@@ -32,6 +32,7 @@ package com.mhschmieder.fxdxfparser.loader;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * DxfLineType contiene la definición de un linetype de Autocad. La
@@ -119,17 +120,17 @@ public final class DxfLineType {
         final int numberOfDashes = pattern.length - ( pattern.length % 2 );
         final int dashArrayLength = numberOfDashes * 2;
 
-        final ArrayList< Double > dashArray = new ArrayList<>( dashArrayLength );
+        final List< Double > dashArray = new ArrayList<>( dashArrayLength );
 
         // TODO: Determine whether the older linestrip-oriented algorithm to
-        // "design" the pattern is still needed, and if so, convert its output
-        // to a simple/efficient dash array vs. an array of line/shape objects.
+        //  "design" the pattern is still needed, and if so, convert its output
+        //  to a simple/efficient dash array vs. an array of line/shape objects.
         // NOTE: Probably instead, we need to use the cached pattern, and check
-        // each number for negative, zero, or positive, and apply accordingly,
-        // with line type scale. See p. 140 in the AutoCAD 2000 Objects book for
-        // details, and refer to the older design() method in the archived
-        // LineTypeDef file. It is likely that the description is equivalent
-        // though, as it is the only field that is exposed via Active X API's.
+        //  each number for negative, zero, or positive, and apply accordingly,
+        //  with line type scale. See p. 140 in the AutoCAD 2000 Objects book
+        //  for details, and refer to the older design() method in the archived
+        //  LineTypeDef file. It is likely that the description is equivalent
+        //  though, as it is the only field that is exposed via Active X API's.
         int dashArrayIndex = 0;
         for ( int dashTypeIndex = 0; dashTypeIndex < numberOfDashes; dashTypeIndex++ ) {
             double onLength = 3.0d;

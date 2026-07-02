@@ -96,7 +96,7 @@ public final class DxfDocument {
     private DxfEntity                      _lastEntity;
 
     // Bloques usados como flechas de cota (dimension)
-    private ArrayList< String >            _arrows;
+    private List< String >            _arrows;
 
     // =================== T A B L A S
     // ---- LAYERS
@@ -268,11 +268,11 @@ public final class DxfDocument {
      * @return array con los nombres de las capas
      */
     public List< String > getLayerNames() {
-        if ( ( _tblLayer == null ) || ( _tblLayer.size() == 0 ) ) {
+        if ( ( _tblLayer == null ) || ( _tblLayer.isEmpty() ) ) {
             return new ArrayList<>();
         }
 
-        final ArrayList< String > layerNames = new ArrayList<>( _tblLayer.size() );
+        final List< String > layerNames = new ArrayList<>( _tblLayer.size() );
         final Collection< DxfLayer > layerCollection = _tblLayer.values();
         for ( final DxfLayer layer : layerCollection ) {
             if ( layer != null ) {

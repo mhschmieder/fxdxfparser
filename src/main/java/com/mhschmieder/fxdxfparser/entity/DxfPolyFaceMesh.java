@@ -47,7 +47,7 @@ import java.util.List;
 
 public class DxfPolyFaceMesh extends DxfPolyline {
 
-    protected ArrayList< DxfFaceDef > _faces;
+    protected List< DxfFaceDef > _faces;
 
     protected int                     _numberOfVertices;
     protected int                     _numberOfFaces;

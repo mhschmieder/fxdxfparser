@@ -117,27 +117,29 @@ public final class PolylineUtilities {
         }
     }
 
-    public static boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
-                                             final Affine transform,
-                                             final double strokeScale,
-                                             final DxfEntity entity,
-                                             final boolean isVertex2D,
-                                             final ArrayList< PolyVertex > polyVertices,
-                                             final ArrayList< DxfVertex > dxfVertices,
-                                             final boolean closedPolyline,
-                                             final boolean hasWidth ) {
+    public static boolean convertToFxShapes(
+            final DxfShapeContainer dxfShapeContainer,
+            final Affine transform,
+            final double strokeScale,
+            final DxfEntity entity,
+            final boolean isVertex2D,
+            final List< PolyVertex > polyVertices,
+            final List< DxfVertex > dxfVertices,
+            final boolean closedPolyline,
+            final boolean hasWidth ) {
         final Color color = entity.getColor();
         final DxfLineType lineType = entity.getLineType();
-        final double lineTypeScale =
-                                   entity._dxfDoc.getGlobalLineTypeScale() * entity._lineTypeScale;
+        final double lineTypeScale = entity._dxfDoc.getGlobalLineTypeScale()
+                * entity._lineTypeScale;
 
         if ( isVertex2D ) {
             final Vectorization vec = new Vectorization();
             vec.setGrads( NUMBER_OF_GRADS );
-            final ArrayList< Vertex > vlist = makeVertexList( vec,
-                                                              polyVertices,
-                                                              closedPolyline,
-                                                              hasWidth );
+            final List< Vertex > vlist = makeVertexList(
+                    vec,
+                    polyVertices,
+                    closedPolyline,
+                    hasWidth );
             if ( vlist.isEmpty() ) {
                 return false;
             }
@@ -158,7 +160,7 @@ public final class PolylineUtilities {
         // These were originally 3D points in AutoCAD, so LineType and other 2D
         // flags don't apply, meaning we can just go straight ahead and simply
         // these into regular Polylines and Polygons.
-        final ArrayList< Vertex > vertarray = new ArrayList<>( dxfVertices.size() );
+        final List< Vertex > vertarray = new ArrayList<>( dxfVertices.size() );
         for ( final DxfVertex dxfVertex : dxfVertices ) {
             if ( dxfVertex != null ) {
                 final Vertex vertex = new Vertex( dxfVertex._x, dxfVertex._y );
@@ -223,12 +225,13 @@ public final class PolylineUtilities {
         }
     }
 
-    public static ArrayList< Vertex > makeVertexList( final Vectorization vectorization,
-                                                      final ArrayList< PolyVertex > vertexlist,
-                                                      final boolean closed,
-                                                      final boolean hasWidth ) {
+    public static List< Vertex > makeVertexList(
+            final Vectorization vectorization,
+            final List< PolyVertex > vertexlist,
+            final boolean closed,
+            final boolean hasWidth ) {
         // Lista de vértices
-        final ArrayList< Vertex > vlist = new ArrayList<>( 4 );
+        final List< Vertex > vlist = new ArrayList<>( 4 );
         vlist.add( null ); // El elemento será sobrescrito con vlist.set
 
         final VectorizationMode mode = vectorization.getMode();

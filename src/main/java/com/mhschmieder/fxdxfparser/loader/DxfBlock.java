@@ -40,6 +40,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
 
@@ -52,7 +53,7 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
     private Point2D                      _origin;
 
     private int                          _flags;
-    private final ArrayList< DxfEntity > _entities;
+    private final List< DxfEntity > _entities;
     private PropertyOverriding           _propertyOverriding;
 
     // **** Propiedades provisionales: ****

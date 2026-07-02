@@ -44,6 +44,7 @@ import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class DxfLwPolyline extends DxfEntity {
 
@@ -57,7 +58,7 @@ public class DxfLwPolyline extends DxfEntity {
     protected double                  _elevation;
     protected double                  _thickness;
 
-    protected ArrayList< PolyVertex > _polyVertices;
+    protected List< PolyVertex > _polyVertices;
 
     protected double                  _extrusionX;
     protected double                  _extrusionY;
@@ -84,17 +85,16 @@ public class DxfLwPolyline extends DxfEntity {
             return false;
         }
 
-        final boolean succeeded = PolylineUtilities.convertToFxShapes( dxfShapeContainer,
-                                                                       transform,
-                                                                       strokeScale,
-                                                                       this,
-                                                                       true,
-                                                                       _polyVertices,
-                                                                       null,
-                                                                       needClose(),
-                                                                       _hasWidth );
-
-        return succeeded;
+        return PolylineUtilities.convertToFxShapes(
+                dxfShapeContainer,
+                transform,
+                strokeScale,
+                this,
+                true,
+                _polyVertices,
+                null,
+                needClose(),
+                _hasWidth );
     }
 
     protected boolean isClosed() {
