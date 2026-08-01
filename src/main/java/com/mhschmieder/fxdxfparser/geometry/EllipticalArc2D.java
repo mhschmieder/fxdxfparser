@@ -118,10 +118,12 @@ public final class EllipticalArc2D {
     }
 
     public Vertex[] normalizeGradients( final double grads ) {
-        final double normalizedGrads = ( ( float ) grads == 0f ) ? 1 : FastMath.min( 20.0d, grads );
+        final double normalizedGrads = ( ( float ) grads == 0f )
+                ? 1
+                : FastMath.min( 20.0d, grads );
         final double diff = getTotalAngle();
-        final int numberOfVertices =
-                FastMath.max( ( int ) FastMath.round( diff / normalizedGrads ) + 1, 2 );
+        final int numberOfVertices = FastMath.max( ( int ) FastMath.round(
+                diff / normalizedGrads ) + 1, 2 );
         final double newgrads = diff / ( numberOfVertices - 1 );
 
         final Vertex[] vertices = new Vertex[ numberOfVertices ];
