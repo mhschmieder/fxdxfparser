@@ -37,87 +37,83 @@ import java.util.Map;
 
 public class DxfStatus {
 
-    public static void addToEntitiesByType(
-            final EntityType entityType,
-            final Map< EntityType, Integer > numberOfEntitiesByType ) {
+    public final Map< EntityType, Integer >
+            _numberOfBlockContextEntitiesReadByType = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfModelSpaceEntitiesReadByType = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfPaperSpaceEntitiesReadByType = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfBlockContextEntitiesIgnoredByType = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfModelSpaceEntitiesIgnoredByType = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfPaperSpaceEntitiesIgnoredByType = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfUnsupportedBlockContextEntitiesByType
+            = new HashMap<>( 100 );
+    public final Map< EntityType, Integer >
+            _numberOfUnsupportedModelAndPaperSpaceEntitiesByType
+            = new HashMap<>( 100 );
+    public int _numberOfBlockContextEntitiesRead = 0;
+    public int _numberOfModelSpaceEntitiesRead = 0;
+    public int _numberOfPaperSpaceEntitiesRead = 0;
+    public int _numberOfBlockContextEntitiesIgnored = 0;
+    public int _numberOfModelSpaceEntitiesIgnored = 0;
+    public int _numberOfPaperSpaceEntitiesIgnored = 0;
+    public int _numberOfUnsupportedBlockContextEntities = 0;
+    public int _numberOfUnsupportedModelAndPaperSpaceEntities = 0;
+
+    public final void addToBlockContextEntitiesIgnored( final EntityType entityType ) {
+        addToEntitiesByType( entityType,
+                             _numberOfBlockContextEntitiesIgnoredByType );
+    }
+
+    public static void addToEntitiesByType( final EntityType entityType,
+                                            final Map< EntityType, Integer > numberOfEntitiesByType ) {
         if ( entityType == null ) {
             return;
         }
 
         final int previousEntityCount = numberOfEntitiesByType.getOrDefault(
-                entityType, 0 );
+                entityType,
+                0 );
         final int currentEntityCount = previousEntityCount + 1;
         numberOfEntitiesByType.put( entityType, currentEntityCount );
     }
 
-    public int                                  _numberOfBlockContextEntitiesRead                    =
-                                                                                  0;
-    public int                                  _numberOfModelSpaceEntitiesRead                      =
-                                                                                0;
-    public int                                  _numberOfPaperSpaceEntitiesRead                      =
-                                                                                0;
-
-    public int                                  _numberOfBlockContextEntitiesIgnored                 =
-                                                                                     0;
-    public int                                  _numberOfModelSpaceEntitiesIgnored                   =
-                                                                                   0;
-    public int                                  _numberOfPaperSpaceEntitiesIgnored                   =
-                                                                                   0;
-
-    public int                                  _numberOfUnsupportedBlockContextEntities             =
-                                                                                         0;
-    public int                                  _numberOfUnsupportedModelAndPaperSpaceEntities       =
-                                                                                               0;
-
-    public final Map< EntityType, Integer > _numberOfBlockContextEntitiesReadByType              =
-                                                                                        new HashMap<>( 100 );
-    public final Map< EntityType, Integer > _numberOfModelSpaceEntitiesReadByType                =
-                                                                                      new HashMap<>( 100 );
-    public final Map< EntityType, Integer > _numberOfPaperSpaceEntitiesReadByType                =
-                                                                                      new HashMap<>( 100 );
-
-    public final Map< EntityType, Integer > _numberOfBlockContextEntitiesIgnoredByType           =
-                                                                                           new HashMap<>( 100 );
-    public final Map< EntityType, Integer > _numberOfModelSpaceEntitiesIgnoredByType             =
-                                                                                         new HashMap<>( 100 );
-    public final Map< EntityType, Integer > _numberOfPaperSpaceEntitiesIgnoredByType             =
-                                                                                         new HashMap<>( 100 );
-
-    public final Map< EntityType, Integer > _numberOfUnsupportedBlockContextEntitiesByType       =
-                                                                                               new HashMap<>( 100 );
-    public final Map< EntityType, Integer > _numberOfUnsupportedModelAndPaperSpaceEntitiesByType =
-                                                                                                     new HashMap<>( 100 );
-
-    public final void addToBlockContextEntitiesIgnored( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfBlockContextEntitiesIgnoredByType );
-    }
-
     public final void addToBlockContextEntitiesRead( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfBlockContextEntitiesReadByType );
+        addToEntitiesByType( entityType,
+                             _numberOfBlockContextEntitiesReadByType );
     }
 
     public final void addToModelSpaceEntitiesIgnored( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfModelSpaceEntitiesIgnoredByType );
+        addToEntitiesByType( entityType,
+                             _numberOfModelSpaceEntitiesIgnoredByType );
     }
 
     public final void addToModelSpaceEntitiesRead( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfModelSpaceEntitiesReadByType );
+        addToEntitiesByType( entityType,
+                             _numberOfModelSpaceEntitiesReadByType );
     }
 
     public final void addToPaperSpaceEntitiesIgnored( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfPaperSpaceEntitiesIgnoredByType );
+        addToEntitiesByType( entityType,
+                             _numberOfPaperSpaceEntitiesIgnoredByType );
     }
 
     public final void addToPaperSpaceEntitiesRead( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfPaperSpaceEntitiesReadByType );
+        addToEntitiesByType( entityType,
+                             _numberOfPaperSpaceEntitiesReadByType );
     }
 
     public final void addToUnsupportedBlockContextEntities( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfUnsupportedBlockContextEntitiesByType );
+        addToEntitiesByType( entityType,
+                             _numberOfUnsupportedBlockContextEntitiesByType );
     }
 
     public final void addToUnsupportedModelAndPaperSpaceEntities( final EntityType entityType ) {
-        addToEntitiesByType( entityType, _numberOfUnsupportedModelAndPaperSpaceEntitiesByType );
+        addToEntitiesByType( entityType,
+                             _numberOfUnsupportedModelAndPaperSpaceEntitiesByType );
     }
-
 }// class DxfStatus

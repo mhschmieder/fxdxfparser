@@ -39,12 +39,12 @@ import java.util.HashSet;
 public final class EntityTypeHash {
 
     // Total number of currently supported entity types.
-    private static final int                   NUMBER_OF_SUPPORTED_ENTITY_TYPES = 19;
+    private static final int NUMBER_OF_SUPPORTED_ENTITY_TYPES = 19;
 
     // HashSet for supported Entity Types, for a quick determination of
     // unsupported entities. This is mostly used to gather statistics.
-    private static final HashSet< EntityType > _entityTypeSupportedSet          =
-                                                                       new HashSet<>( NUMBER_OF_SUPPORTED_ENTITY_TYPES );
+    private static final HashSet< EntityType > _entityTypeSupportedSet
+            = new HashSet<>( NUMBER_OF_SUPPORTED_ENTITY_TYPES );
 
     // NOTE: The Viewport entity is commented out, as it isn't needed for 2D
     // drawings and as its DXF definition has changed with AutoCAD
@@ -96,5 +96,4 @@ public final class EntityTypeHash {
     public static boolean isEntityTypeSupported( final EntityType entityType ) {
         return _entityTypeSupportedSet.contains( entityType );
     }
-
 }// class EntityTypeHash

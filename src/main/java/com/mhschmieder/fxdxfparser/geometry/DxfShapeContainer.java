@@ -44,16 +44,22 @@ import javafx.scene.shape.StrokeType;
  */
 public class DxfShapeContainer extends Group implements ExplicitlyBounded {
 
-    /** Stroke width, to be applied to the entire JavaFX Shapes Group. */
+    /**
+     * Stroke width, to be applied to the entire JavaFX Shapes Group.
+     */
     protected final DoubleProperty strokeWidth;
 
-    /** Minimum point for the Shapes Group; usually from Drawing Limits. */
-    private final double           _minX;
-    private final double           _minY;
+    /**
+     * Minimum point for the Shapes Group; usually from Drawing Limits.
+     */
+    private final double _minX;
+    private final double _minY;
 
-    /** Maximum point for the Shapes Group; usually from Drawing Limits. */
-    private final double           _maxX;
-    private final double           _maxY;
+    /**
+     * Maximum point for the Shapes Group; usually from Drawing Limits.
+     */
+    private final double _maxX;
+    private final double _maxY;
 
     // Default constructor, when bounds are not known.
     public DxfShapeContainer() {
@@ -80,19 +86,26 @@ public class DxfShapeContainer extends Group implements ExplicitlyBounded {
         strokeWidth = new SimpleDoubleProperty( 1.0d );
     }
 
-    public final void addShape( final double strokeScale, final Shape newChild ) {
+    public final void addShape( final double strokeScale,
+                                final Shape newChild ) {
         getChildren().add( newChild );
 
         // Make sure that any changes to stroke width are inherited.
-        newChild.strokeWidthProperty().bind( strokeWidthProperty().multiply( strokeScale ) );
+        newChild.strokeWidthProperty()
+                .bind( strokeWidthProperty().multiply( strokeScale ) );
 
         // NOTE: Centered stroke is default, but better safe than sorry, as
         // outside stroke can crash the application if shape is non-manifold.
         newChild.setStrokeType( StrokeType.CENTERED );
     }
 
-    public final void clearShapes() {
-        getChildren().clear();
+    /**
+     * It is sometimes necessary to bind one stroke width with another.
+     *
+     * @return the stroke width property
+     */
+    public final DoubleProperty strokeWidthProperty() {
+        return strokeWidth;
     }
 
     /**
@@ -102,13 +115,12 @@ public class DxfShapeContainer extends Group implements ExplicitlyBounded {
     public final Rectangle2D getExplicitBounds() {
         final double width = _maxX - _minX;
         final double height = _maxY - _minY;
-        final Rectangle2D explicitBounds = new Rectangle2D( _minX, _minY, width, height );
+        final Rectangle2D explicitBounds = new Rectangle2D( _minX,
+                                                            _minY,
+                                                            width,
+                                                            height );
 
         return explicitBounds;
-    }
-
-    public final double getStrokeWidth() {
-        return strokeWidth.get();
     }
 
     @Override
@@ -121,29 +133,26 @@ public class DxfShapeContainer extends Group implements ExplicitlyBounded {
         return limitsValid;
     }
 
-    public final void reset() {
-        // Clear the added shapes to ensure they can be garbage collected.
-        clearShapes();
+    public final double getStrokeWidth() {
+        return strokeWidth.get();
     }
 
     /**
      * Sets the stroke on child {@link javafx.scene.shape.Shape shapes} to a
      * uniform scale in this node's frame of reference.
      *
-     * @param pStrokeWidth
-     *            The width of the stroke, roughly in pixels
+     * @param pStrokeWidth The width of the stroke, roughly in pixels
      */
     public final void setStrokeWidth( final double pStrokeWidth ) {
         strokeWidth.set( pStrokeWidth );
     }
 
-    /**
-     * It is sometimes necessary to bind one stroke width with another.
-     * 
-     * @return the stroke width property
-     */
-    public final DoubleProperty strokeWidthProperty() {
-        return strokeWidth;
+    public final void reset() {
+        // Clear the added shapes to ensure they can be garbage collected.
+        clearShapes();
     }
 
+    public final void clearShapes() {
+        getChildren().clear();
+    }
 }// class DxfShapeContainer

@@ -38,12 +38,13 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.Collection;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.transform.Affine;
-
-import java.util.Collection;
 
 public class DxfArc extends DxfEntity {
 
@@ -65,8 +66,7 @@ public class DxfArc extends DxfEntity {
     public DxfArc( final DxfDocument pdoc,
                    final DxfPairContainer pc,
                    final EntityType entityType,
-                   final boolean ignorePaperSpace )
-            throws DxfReaderException {
+                   final boolean ignorePaperSpace ) throws DxfReaderException {
         super( pdoc, pc, entityType, ignorePaperSpace );
     }
 
@@ -91,7 +91,12 @@ public class DxfArc extends DxfEntity {
         if ( _endAngle < _startAngle ) {
             arcExtentDeg -= 360d;
         }
-        final Arc arc = new Arc( _centerX, _centerY, _radius, _radius, -_startAngle, arcExtentDeg );
+        final Arc arc = new Arc( _centerX,
+                                 _centerY,
+                                 _radius,
+                                 _radius,
+                                 -_startAngle,
+                                 arcExtentDeg );
 
         arc.getTransforms().add( transform );
         arc.setStroke( color );
@@ -100,8 +105,10 @@ public class DxfArc extends DxfEntity {
         arc.setFill( null );
 
         if ( ( lineType != null ) && !lineType.isContinuous() ) {
-            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale() * _lineTypeScale;
-            final Collection< Double > dashArrayCandidate = lineType.makeDashArray( lineTypeScale );
+            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale()
+                                         * _lineTypeScale;
+            final Collection< Double > dashArrayCandidate
+                    = lineType.makeDashArray( lineTypeScale );
             final ObservableList< Double > dashArray = arc.getStrokeDashArray();
             dashArray.setAll( dashArrayCandidate );
         }
@@ -112,22 +119,45 @@ public class DxfArc extends DxfEntity {
     }
 
     @Override
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS,
+                                                            "0" ) );
 
-        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _centerZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _centerX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _radius = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
+        _radius
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
 
-        _startAngle = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE50 ) );
-        _endAngle = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE51 ) );
+        _startAngle
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE50 ) );
+        _endAngle
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE51 ) );
 
-        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X,
+                                                            "0" ) );
+        _extrusionY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y,
+                                                            "0" ) );
+        _extrusionZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z,
+                                                            "0" ) );
     }
-
 }// class DxfArc

@@ -31,17 +31,22 @@
 package com.mhschmieder.fxdxfparser.geometry;
 
 /**
- * This is a wrapper for the parameterization of the Vectorization of
- * Linestrips via Elliptical Arcs, but currently only deals with Grads vs. Scale
- * Grads or Vertex Count (in terms of actual usage).
+ * This is a wrapper for the parameterization of the Vectorization of Linestrips
+ * via Elliptical Arcs, but currently only deals with Grads vs. Scale Grads or
+ * Vertex Count (in terms of actual usage).
  */
 public final class Vectorization {
 
     private VectorizationMode _mode;
-    private double            _value;
+    private double _value;
 
     public double getGrads() {
         return _value;
+    }
+
+    public void setGrads( final double grads ) {
+        _mode = VectorizationMode.GRADS;
+        _value = grads;
     }
 
     public VectorizationMode getMode() {
@@ -52,23 +57,17 @@ public final class Vectorization {
         return _value;
     }
 
-    public double getVertexCount() {
-        return _value;
-    }
-
-    public void setGrads( final double grads ) {
-        _mode = VectorizationMode.GRADS;
-        _value = grads;
-    }
-
     public void setScaleGrads( final double scaleGrads ) {
         _mode = VectorizationMode.SCALE_GRADS;
         _value = scaleGrads;
+    }
+
+    public double getVertexCount() {
+        return _value;
     }
 
     public void setVertexCount( final int vertexCount ) {
         _mode = VectorizationMode.VERTEX;
         _value = vertexCount;
     }
-
 }// class Vectorization

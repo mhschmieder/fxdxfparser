@@ -63,75 +63,74 @@ public enum DxfDistanceUnit {
         DxfDistanceUnit dxfDistanceUnit = DxfDistanceUnit.UNITLESS;
 
         switch ( dxfDistanceUnitIndex ) {
-        case 0:
-            dxfDistanceUnit = DxfDistanceUnit.UNITLESS;
-            break;
-        case 1:
-            dxfDistanceUnit = DxfDistanceUnit.INCHES;
-            break;
-        case 2:
-            dxfDistanceUnit = DxfDistanceUnit.FEET;
-            break;
-        case 3:
-            dxfDistanceUnit = DxfDistanceUnit.MILES;
-            break;
-        case 4:
-            dxfDistanceUnit = DxfDistanceUnit.MILLIMETERS;
-            break;
-        case 5:
-            dxfDistanceUnit = DxfDistanceUnit.CENTIMETERS;
-            break;
-        case 6:
-            dxfDistanceUnit = DxfDistanceUnit.METERS;
-            break;
-        case 7:
-            dxfDistanceUnit = DxfDistanceUnit.KILOMETERS;
-            break;
-        case 8:
-            dxfDistanceUnit = DxfDistanceUnit.MICROINCHES;
-            break;
-        case 9:
-            dxfDistanceUnit = DxfDistanceUnit.MILS;
-            break;
-        case 10:
-            dxfDistanceUnit = DxfDistanceUnit.YARDS;
-            break;
-        case 11:
-            dxfDistanceUnit = DxfDistanceUnit.ANGSTROMS;
-            break;
-        case 12:
-            dxfDistanceUnit = DxfDistanceUnit.NANOMETERS;
-            break;
-        case 13:
-            dxfDistanceUnit = DxfDistanceUnit.MICRONS;
-            break;
-        case 14:
-            dxfDistanceUnit = DxfDistanceUnit.DECIMETERS;
-            break;
-        case 15:
-            dxfDistanceUnit = DxfDistanceUnit.DECAMETERS;
-            break;
-        case 16:
-            dxfDistanceUnit = DxfDistanceUnit.HECTOMETERS;
-            break;
-        case 17:
-            dxfDistanceUnit = DxfDistanceUnit.GIGAMETERS;
-            break;
-        case 18:
-            dxfDistanceUnit = DxfDistanceUnit.ASTRONOMICAL_UNITS;
-            break;
-        case 19:
-            dxfDistanceUnit = DxfDistanceUnit.LIGHT_YEARS;
-            break;
-        case 20:
-            dxfDistanceUnit = DxfDistanceUnit.PARSECS;
-            break;
-        default:
-            // NOTE: The remaining cases are all scientific units.
-            break;
+            case 0:
+                dxfDistanceUnit = DxfDistanceUnit.UNITLESS;
+                break;
+            case 1:
+                dxfDistanceUnit = DxfDistanceUnit.INCHES;
+                break;
+            case 2:
+                dxfDistanceUnit = DxfDistanceUnit.FEET;
+                break;
+            case 3:
+                dxfDistanceUnit = DxfDistanceUnit.MILES;
+                break;
+            case 4:
+                dxfDistanceUnit = DxfDistanceUnit.MILLIMETERS;
+                break;
+            case 5:
+                dxfDistanceUnit = DxfDistanceUnit.CENTIMETERS;
+                break;
+            case 6:
+                dxfDistanceUnit = DxfDistanceUnit.METERS;
+                break;
+            case 7:
+                dxfDistanceUnit = DxfDistanceUnit.KILOMETERS;
+                break;
+            case 8:
+                dxfDistanceUnit = DxfDistanceUnit.MICROINCHES;
+                break;
+            case 9:
+                dxfDistanceUnit = DxfDistanceUnit.MILS;
+                break;
+            case 10:
+                dxfDistanceUnit = DxfDistanceUnit.YARDS;
+                break;
+            case 11:
+                dxfDistanceUnit = DxfDistanceUnit.ANGSTROMS;
+                break;
+            case 12:
+                dxfDistanceUnit = DxfDistanceUnit.NANOMETERS;
+                break;
+            case 13:
+                dxfDistanceUnit = DxfDistanceUnit.MICRONS;
+                break;
+            case 14:
+                dxfDistanceUnit = DxfDistanceUnit.DECIMETERS;
+                break;
+            case 15:
+                dxfDistanceUnit = DxfDistanceUnit.DECAMETERS;
+                break;
+            case 16:
+                dxfDistanceUnit = DxfDistanceUnit.HECTOMETERS;
+                break;
+            case 17:
+                dxfDistanceUnit = DxfDistanceUnit.GIGAMETERS;
+                break;
+            case 18:
+                dxfDistanceUnit = DxfDistanceUnit.ASTRONOMICAL_UNITS;
+                break;
+            case 19:
+                dxfDistanceUnit = DxfDistanceUnit.LIGHT_YEARS;
+                break;
+            case 20:
+                dxfDistanceUnit = DxfDistanceUnit.PARSECS;
+                break;
+            default:
+                // NOTE: The remaining cases are all scientific units.
+                break;
         }
 
         return dxfDistanceUnit;
     }
-
 }// enum DxfDistanceUnit

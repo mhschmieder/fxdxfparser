@@ -41,27 +41,40 @@ import java.util.Locale;
 
 public final class DxfLayer {
     // *********************************************************
-    /** capa activada */
-    private static final int LAYER_ON  = 0;
+    /**
+     * capa activada
+     */
+    private static final int LAYER_ON = 0;
 
-    /** capa desactivada */
+    /**
+     * capa desactivada
+     */
     private static final int LAYER_OFF = 1;
 
-    /** Nombre de la capa */
-    private String           name;
+    /**
+     * Nombre de la capa
+     */
+    private String name;
 
     /** flags, tal y como se define en la especificación DXF */
     // private int flags;
-    /** índice de color de la capa */
-    private int              color;
+    /**
+     * índice de color de la capa
+     */
+    private int color;
 
-    /** tipo de línea de la capa */
-    private String           linetype;
+    /**
+     * tipo de línea de la capa
+     */
+    private String linetype;
 
-    /** _estado actual de la capa: activado/desactivado */
-    private int              state;
+    /**
+     * _estado actual de la capa: activado/desactivado
+     */
+    private int state;
 
-    protected DxfLayer() {}
+    protected DxfLayer() {
+    }
 
     public DxfLayer( final String pName,
                      final int pFlags,
@@ -116,11 +129,11 @@ public final class DxfLayer {
      * las entidades que se encuentren en la misma no se añadirán a la escena
      * Java3D.
      *
-     * @param pOn
-     *            true si se quiere hacer visible la capa
+     * @param pOn true si se quiere hacer visible la capa
      */
     public void setLayerOn( final boolean pOn ) {
-        state = ( pOn ? LAYER_ON : LAYER_OFF );
+        state = ( pOn
+                  ? LAYER_ON
+                  : LAYER_OFF );
     }
-
 }// final class DxfLayer

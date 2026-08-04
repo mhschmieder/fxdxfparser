@@ -37,6 +37,7 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
 import javafx.scene.transform.Affine;
 
 public class DxfPoint extends DxfEntity {
@@ -73,5 +74,4 @@ public class DxfPoint extends DxfEntity {
         _y = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
         _z = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
     }
-
 }// class DxfPoint

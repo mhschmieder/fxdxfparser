@@ -38,12 +38,13 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.Collection;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Affine;
-
-import java.util.Collection;
 
 public class DxfRay extends DxfEntity {
 
@@ -58,8 +59,7 @@ public class DxfRay extends DxfEntity {
     public DxfRay( final DxfDocument pdoc,
                    final DxfPairContainer pc,
                    final EntityType entityType,
-                   final boolean ignorePaperSpace )
-            throws DxfReaderException {
+                   final boolean ignorePaperSpace ) throws DxfReaderException {
         super( pdoc, pc, entityType, ignorePaperSpace );
     }
 
@@ -80,15 +80,21 @@ public class DxfRay extends DxfEntity {
         final Color color = getColor();
         final DxfLineType lineType = getLineType();
 
-        final Line line = new Line( _basePointX, _basePointY, endPointX, endPointY );
+        final Line line = new Line( _basePointX,
+                                    _basePointY,
+                                    endPointX,
+                                    endPointY );
 
         line.getTransforms().add( transform );
         line.setStroke( color );
 
         if ( ( lineType != null ) && !lineType.isContinuous() ) {
-            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale() * _lineTypeScale;
-            final Collection< Double > dashArrayCandidate = lineType.makeDashArray( lineTypeScale );
-            final ObservableList< Double > dashArray = line.getStrokeDashArray();
+            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale()
+                                         * _lineTypeScale;
+            final Collection< Double > dashArrayCandidate
+                    = lineType.makeDashArray( lineTypeScale );
+            final ObservableList< Double > dashArray
+                    = line.getStrokeDashArray();
             dashArray.setAll( dashArrayCandidate );
         }
 
@@ -99,13 +105,24 @@ public class DxfRay extends DxfEntity {
 
     @Override
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _basePointX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _basePointY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _basePointZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _basePointX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _basePointY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _basePointZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _directionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _directionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _directionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
+        _directionX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
+        _directionY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
+        _directionZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
     }
-
 }// class DxfRay

@@ -31,28 +31,25 @@
 package com.mhschmieder.fxdxfparser.loader;
 
 import com.mhschmieder.fxdxfparser.geometry.DxfShapeContainer;
+
 import javafx.scene.transform.Affine;
 
 public interface DxfDrawable {
 
     /**
-     * This is the method to call for converting parsed DXF geometry into
-     * JavaFX 2D Shapes. This version of the method throws out the
-     * z-coordinate rather than providing a projection plane.
+     * This is the method to call for converting parsed DXF geometry into JavaFX
+     * 2D Shapes. This version of the method throws out the z-coordinate rather
+     * than providing a projection plane.
      *
-     * @param dxfShapeContainer
-     *            The Scene Graph Group container for all graphics required to
-     *            represent this entity
-     * @param transform
-     *            The combined transform to apply; including any from nested
-     *            blocks
-     * @param strokeScale
-     *            The initial stroke scale to approximate the client's preferred
-     *            line thickness
+     * @param dxfShapeContainer The Scene Graph Group container for all graphics
+     *                          required to represent this entity
+     * @param transform         The combined transform to apply; including any
+     *                          from nested blocks
+     * @param strokeScale       The initial stroke scale to approximate the
+     *                          client's preferred line thickness
      * @return {@code true} if the shapes were successfully converted to JavaFX
      */
     boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                final Affine transform,
                                final double strokeScale );
-
 }// interface DxfDrawable

@@ -30,8 +30,9 @@
  */
 package com.mhschmieder.fxdxfparser.geometry;
 
-import javafx.geometry.Point2D;
 import org.apache.commons.math3.util.FastMath;
+
+import javafx.geometry.Point2D;
 
 // Elliptical Arc in 2D space
 public final class EllipticalArc2D {
@@ -40,8 +41,8 @@ public final class EllipticalArc2D {
     private final Point2D _endMajorAxis;
     private final Point2D _endMinorAxis;
 
-    private final double  _startAngle;
-    private final double  _endAngle;
+    private final double _startAngle;
+    private final double _endAngle;
 
     // Supply a degenerate case, to avoid null pointers.
     public EllipticalArc2D() {
@@ -109,21 +110,13 @@ public final class EllipticalArc2D {
         return _startAngle;
     }
 
-    public double getTotalAngle() {
-        double totalAngle = _endAngle - _startAngle;
-        if ( _endAngle < _startAngle ) {
-            totalAngle += 360d;
-        }
-        return totalAngle;
-    }
-
     public Vertex[] normalizeGradients( final double grads ) {
         final double normalizedGrads = ( ( float ) grads == 0f )
-                ? 1
-                : FastMath.min( 20.0d, grads );
+                                       ? 1
+                                       : FastMath.min( 20.0d, grads );
         final double diff = getTotalAngle();
-        final int numberOfVertices = FastMath.max( ( int ) FastMath.round(
-                diff / normalizedGrads ) + 1, 2 );
+        final int numberOfVertices = FastMath.max(
+                ( int ) FastMath.round( diff / normalizedGrads ) + 1, 2 );
         final double newgrads = diff / ( numberOfVertices - 1 );
 
         final Vertex[] vertices = new Vertex[ numberOfVertices ];
@@ -149,4 +142,11 @@ public final class EllipticalArc2D {
         return vertices;
     }
 
+    public double getTotalAngle() {
+        double totalAngle = _endAngle - _startAngle;
+        if ( _endAngle < _startAngle ) {
+            totalAngle += 360d;
+        }
+        return totalAngle;
+    }
 }// class EllipticalArc2D

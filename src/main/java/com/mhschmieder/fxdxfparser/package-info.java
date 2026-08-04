@@ -30,9 +30,5 @@
  */
 /**
  * This package is a DXF parser that converts entities, blocks, etc. to JavaFX.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
  */
 package com.mhschmieder.fxdxfparser;

@@ -37,24 +37,25 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.transform.Affine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DxfPolygonMesh extends DxfPolyline {
 
     private static final int FLAG_MCLOSED = 1;
     private static final int FLAG_NCLOSED = 32;
 
-    protected int            _mCount;
-    protected int            _nCount;
-    protected int            _mDensity;
-    protected int            _nDensity;
+    protected int _mCount;
+    protected int _nCount;
+    protected int _mDensity;
+    protected int _nDensity;
 
     public DxfPolygonMesh( final DxfDocument doc,
                            final DxfPairContainer pc,
@@ -62,6 +63,27 @@ public class DxfPolygonMesh extends DxfPolyline {
                            final boolean ignorePaperSpace )
             throws DxfReaderException {
         super( doc, pc, entityType, ignorePaperSpace );
+    }
+
+    @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        super.parseEntityProperties( pc );
+
+        _mCount
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
+        _nCount
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72 ) );
+        _mDensity
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73,
+                                                             "0" ) );
+        _nDensity
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74,
+                                                             "0" ) );
     }
 
     @Override
@@ -85,7 +107,8 @@ public class DxfPolygonMesh extends DxfPolyline {
 
             if ( ( _polyFlags & FLAG_MCLOSED ) != 0 ) {
                 final Polygon polygon = new Polygon();
-                final ObservableList< Double > polygonCoordinates = polygon.getPoints();
+                final ObservableList< Double > polygonCoordinates
+                        = polygon.getPoints();
                 polygonCoordinates.addAll( coordinates );
 
                 // Polygon3D is supposed to be treated like a wireframe.
@@ -98,7 +121,8 @@ public class DxfPolygonMesh extends DxfPolyline {
             }
             else {
                 final Polyline polyline = new Polyline();
-                final ObservableList< Double > polylineCoordinates = polyline.getPoints();
+                final ObservableList< Double > polylineCoordinates
+                        = polyline.getPoints();
                 polylineCoordinates.addAll( coordinates );
 
                 polyline.getTransforms().add( transform );
@@ -120,7 +144,8 @@ public class DxfPolygonMesh extends DxfPolyline {
 
             if ( ( _polyFlags & FLAG_NCLOSED ) != 0 ) {
                 final Polygon polygon = new Polygon();
-                final ObservableList< Double > polygonCoordinates = polygon.getPoints();
+                final ObservableList< Double > polygonCoordinates
+                        = polygon.getPoints();
                 polygonCoordinates.addAll( coordinates );
 
                 // By default, Polygons are filled, but we only want a
@@ -134,7 +159,8 @@ public class DxfPolygonMesh extends DxfPolyline {
             }
             else {
                 final Polyline polyline = new Polyline();
-                final ObservableList< Double > polylineCoordinates = polyline.getPoints();
+                final ObservableList< Double > polylineCoordinates
+                        = polyline.getPoints();
                 polylineCoordinates.addAll( coordinates );
 
                 polyline.getTransforms().add( transform );
@@ -146,16 +172,4 @@ public class DxfPolygonMesh extends DxfPolyline {
 
         return true;
     }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        super.parseEntityProperties( pc );
-
-        _mCount = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
-        _nCount = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72 ) );
-        _mDensity = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73, "0" ) );
-        _nDensity = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74, "0" ) );
-    }
-
 }// class DxfPolygonMesh

@@ -34,9 +34,8 @@ package com.mhschmieder.fxdxfparser.reader;
  * This is an encapsulation of checked exceptions thrown by this library, for
  * purposes of clearly identifying library calls as the underlying cause.
  *
- * @version 0.1
- *
  * @author David Tejada Francia
+ * @version 0.1
  */
 public class DxfReaderException extends Exception {
     /**
@@ -47,15 +46,13 @@ public class DxfReaderException extends Exception {
     /**
      * Fully qualified constructor for a library encapsulation of exceptions
      * related to DXF handling. Generally these will be recaptures of Core Java
-     * exceptions, wrapped in a library class to better mark the cause or fault.
+     * exceptions, wrapped in a library class to better mark the cause or
+     * fault.
      *
-     * @param message
-     *            The full pre-parsed string to include with the exception
-     *
+     * @param message The full pre-parsed string to include with the exception
      * @since 1.0
      */
     public DxfReaderException( final String message ) {
         super( message );
     }
-
 }// class DxfReaderException

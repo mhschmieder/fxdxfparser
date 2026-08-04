@@ -39,14 +39,6 @@ public class Vertex extends Point {
         this( 0.0d, 0.0d, 0.0d, 0.0d );
     }
 
-    public Vertex( final double x, final double y ) {
-        this( x, y, 0.0d, 0.0d );
-    }
-
-    public Vertex( final double x, final double y, final double z ) {
-        this( x, y, z, 0.0d, 0.0d );
-    }
-
     public Vertex( final double x,
                    final double y,
                    final double pStartWidth,
@@ -65,28 +57,39 @@ public class Vertex extends Point {
         _endWidth = endWidth;
     }
 
-    public final double getEndWidth() {
-        return _endWidth;
+    public Vertex( final double x,
+                   final double y ) {
+        this( x, y, 0.0d, 0.0d );
     }
 
-    public final double getStartWidth() {
-        return _startWidth;
+    public Vertex( final double x,
+                   final double y,
+                   final double z ) {
+        this( x, y, z, 0.0d, 0.0d );
+    }
+
+    public final double getEndWidth() {
+        return _endWidth;
     }
 
     public final void setEndWidth( final double endWidth ) {
         _endWidth = endWidth;
     }
 
+    public final double getStartWidth() {
+        return _startWidth;
+    }
+
     public final void setStartWidth( final double startWidth ) {
         _startWidth = startWidth;
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     @Override
     public String toString() {
         final String pointVerbose = super.toString();
-        final String vertexVerbose = pointVerbose + " " + _startWidth + " " + _endWidth;
+        final String vertexVerbose = pointVerbose + " " + _startWidth + " "
+                                     + _endWidth;
         return vertexVerbose;
     }
-
 }// class Vertex

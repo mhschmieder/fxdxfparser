@@ -40,31 +40,32 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
-import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.scene.transform.Affine;
+
 public class DxfLwPolyline extends DxfEntity {
 
-    protected static final int        FLAG_CLOSED = 1;
+    protected static final int FLAG_CLOSED = 1;
 
-    protected int                     _numberOfVertices;
+    protected int _numberOfVertices;
 
-    protected int                     _polyFlags;
+    protected int _polyFlags;
 
-    protected double                  _constantWidth;
-    protected double                  _elevation;
-    protected double                  _thickness;
+    protected double _constantWidth;
+    protected double _elevation;
+    protected double _thickness;
 
     protected List< PolyVertex > _polyVertices;
 
-    protected double                  _extrusionX;
-    protected double                  _extrusionY;
-    protected double                  _extrusionZ;
+    protected double _extrusionX;
+    protected double _extrusionY;
+    protected double _extrusionZ;
 
-    protected boolean                 _hasWidth;
+    protected boolean _hasWidth;
 
     public DxfLwPolyline( final DxfDocument pdoc,
                           final DxfPairContainer pc,
@@ -72,6 +73,54 @@ public class DxfLwPolyline extends DxfEntity {
                           final boolean ignorePaperSpace )
             throws DxfReaderException {
         super( pdoc, pc, entityType, ignorePaperSpace );
+    }
+
+    protected boolean isClosed() {
+        return ( _polyFlags & DxfLwPolyline.FLAG_CLOSED ) != 0;
+    }
+
+    @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        _numberOfVertices = NumberUtilities.parseInteger( pc.getValue(
+                DxfGroupCodes.CODE90 ) );
+
+        _polyFlags
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS,
+                                                             "0" ) );
+
+        _constantWidth
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE43,
+                                                            "0" ) );
+        _elevation
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.ELEVATION,
+                                                            "0" ) );
+        _thickness
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS,
+                                                            "0" ) );
+
+        // Dynamically determine whether the polyline has width.
+        _hasWidth = _constantWidth > 0;
+
+        // Loop over the polyline vertices.
+        parsePolylineVertices( pc );
+
+        _extrusionX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X,
+                                                            "0" ) );
+        _extrusionY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y,
+                                                            "0" ) );
+        _extrusionZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z,
+                                                            "0" ) );
     }
 
     @Override
@@ -85,20 +134,15 @@ public class DxfLwPolyline extends DxfEntity {
             return false;
         }
 
-        return PolylineUtilities.convertToFxShapes(
-                dxfShapeContainer,
-                transform,
-                strokeScale,
-                this,
-                true,
-                _polyVertices,
-                null,
-                needClose(),
-                _hasWidth );
-    }
-
-    protected boolean isClosed() {
-        return ( _polyFlags & DxfLwPolyline.FLAG_CLOSED ) != 0;
+        return PolylineUtilities.convertToFxShapes( dxfShapeContainer,
+                                                    transform,
+                                                    strokeScale,
+                                                    this,
+                                                    true,
+                                                    _polyVertices,
+                                                    null,
+                                                    needClose(),
+                                                    _hasWidth );
     }
 
     protected boolean isDegenerate() {
@@ -106,31 +150,11 @@ public class DxfLwPolyline extends DxfEntity {
     }
 
     protected boolean needClose() {
-        return ( ( _polyFlags & DxfLwPolyline.FLAG_CLOSED ) != 0 ) && ( PolylineUtilities
-                .compareVertex2D( _polyVertices.get( 0 ),
-                                  _polyVertices.get( _polyVertices.size() - 1 ) ) != 0 );
-    }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _numberOfVertices = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE90 ) );
-
-        _polyFlags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
-
-        _constantWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE43, "0" ) );
-        _elevation = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.ELEVATION, "0" ) );
-        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
-
-        // Dynamically determine whether the polyline has width.
-        _hasWidth = _constantWidth > 0;
-
-        // Loop over the polyline vertices.
-        parsePolylineVertices( pc );
-
-        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        return ( ( _polyFlags & DxfLwPolyline.FLAG_CLOSED ) != 0 ) && (
+                PolylineUtilities.compareVertex2D( _polyVertices.get( 0 ),
+                                                   _polyVertices.get(
+                                                           _polyVertices.size()
+                                                           - 1 ) ) != 0 );
     }
 
     protected final void parsePolylineVertices( final DxfPairContainer pc ) {
@@ -145,38 +169,48 @@ public class DxfLwPolyline extends DxfEntity {
         while ( it.hasNext() ) {
             final DxfPair pair = it.next();
             switch ( pair.getKey() ) {
-            case DxfGroupCodes.CODE10:
-                polyVertex =
-                           new PolyVertex( 0.0d, 0.0d, 0.0d, _constantWidth, _constantWidth, 0.0d );
-                _polyVertices.add( polyVertex );
+                case DxfGroupCodes.CODE10:
+                    polyVertex = new PolyVertex( 0.0d,
+                                                 0.0d,
+                                                 0.0d,
+                                                 _constantWidth,
+                                                 _constantWidth,
+                                                 0.0d );
+                    _polyVertices.add( polyVertex );
 
-                polyVertex._x = NumberUtilities.parseDouble( pair.getValue() );
-                break;
-            case DxfGroupCodes.CODE20:
-                polyVertex._y = NumberUtilities.parseDouble( pair.getValue() );
-                break;
-            case DxfGroupCodes.CODE30:
-                polyVertex._z = NumberUtilities.parseDouble( pair.getValue() );
-                break;
-            case DxfGroupCodes.CODE40:
-                if ( _constantWidth <= 0.0d ) {
-                    polyVertex._startWidth = NumberUtilities.parseDouble( pair.getValue() );
-                    _hasWidth |= polyVertex._startWidth > 0.0d;
-                }
-                break;
-            case DxfGroupCodes.CODE41:
-                if ( _constantWidth <= 0.0d ) {
-                    polyVertex._endWidth = NumberUtilities.parseDouble( pair.getValue() );
-                    _hasWidth |= polyVertex._endWidth > 0.0d;
-                }
-                break;
-            case DxfGroupCodes.CODE42:
-                polyVertex._bulge = NumberUtilities.parseDouble( pair.getValue() );
-                break;
-            default:
-                break;
+                    polyVertex._x
+                            = NumberUtilities.parseDouble( pair.getValue() );
+                    break;
+                case DxfGroupCodes.CODE20:
+                    polyVertex._y
+                            = NumberUtilities.parseDouble( pair.getValue() );
+                    break;
+                case DxfGroupCodes.CODE30:
+                    polyVertex._z
+                            = NumberUtilities.parseDouble( pair.getValue() );
+                    break;
+                case DxfGroupCodes.CODE40:
+                    if ( _constantWidth <= 0.0d ) {
+                        polyVertex._startWidth = NumberUtilities.parseDouble(
+                                pair.getValue() );
+                        _hasWidth |= polyVertex._startWidth > 0.0d;
+                    }
+                    break;
+                case DxfGroupCodes.CODE41:
+                    if ( _constantWidth <= 0.0d ) {
+                        polyVertex._endWidth
+                                =
+                                NumberUtilities.parseDouble( pair.getValue() );
+                        _hasWidth |= polyVertex._endWidth > 0.0d;
+                    }
+                    break;
+                case DxfGroupCodes.CODE42:
+                    polyVertex._bulge
+                            = NumberUtilities.parseDouble( pair.getValue() );
+                    break;
+                default:
+                    break;
             }
         }
     }
-
 }// class DxfLwPolyline

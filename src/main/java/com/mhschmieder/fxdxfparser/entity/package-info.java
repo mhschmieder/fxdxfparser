@@ -30,9 +30,5 @@
  */
 /**
  * This package is the low-level entity parsing for fxdxfparser.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
  */
 package com.mhschmieder.fxdxfparser.entity;

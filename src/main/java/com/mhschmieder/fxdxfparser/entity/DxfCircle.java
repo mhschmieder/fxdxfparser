@@ -38,12 +38,13 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.Collection;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Affine;
-
-import java.util.Collection;
 
 public class DxfCircle extends DxfEntity {
 
@@ -87,9 +88,12 @@ public class DxfCircle extends DxfEntity {
         circle.setFill( null );
 
         if ( ( lineType != null ) && !lineType.isContinuous() ) {
-            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale() * _lineTypeScale;
-            final Collection< Double > dashArrayCandidate = lineType.makeDashArray( lineTypeScale );
-            final ObservableList< Double > dashArray = circle.getStrokeDashArray();
+            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale()
+                                         * _lineTypeScale;
+            final Collection< Double > dashArrayCandidate
+                    = lineType.makeDashArray( lineTypeScale );
+            final ObservableList< Double > dashArray
+                    = circle.getStrokeDashArray();
             dashArray.setAll( dashArrayCandidate );
         }
 
@@ -98,19 +102,38 @@ public class DxfCircle extends DxfEntity {
     }
 
     @Override
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS,
+                                                            "0" ) );
 
-        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _centerZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _centerX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
 
-        _radius = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
+        _radius
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
 
-        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X,
+                                                            "0" ) );
+        _extrusionY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y,
+                                                            "0" ) );
+        _extrusionZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z,
+                                                            "0" ) );
     }
-
 }// class DxfCircle

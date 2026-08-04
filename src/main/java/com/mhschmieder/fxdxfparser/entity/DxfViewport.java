@@ -36,25 +36,26 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
 import javafx.geometry.Point2D;
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Scale;
 
 public class DxfViewport extends DxfEntity {
 
-    protected double  _centerX;
-    protected double  _centerY;
-    protected double  _width;
-    protected double  _height;
+    protected double _centerX;
+    protected double _centerY;
+    protected double _width;
+    protected double _height;
 
-    protected double  _viewCenterX;
-    protected double  _viewCenterY;
-    protected double  _viewWidth;
-    protected double  _viewHeight;
+    protected double _viewCenterX;
+    protected double _viewCenterY;
+    protected double _viewWidth;
+    protected double _viewHeight;
 
-    protected int     _id;
+    protected int _id;
 
-    protected Affine  _blockTransform;
+    protected Affine _blockTransform;
 
     protected Point2D _boundsMax;
     protected Point2D _boundsMin;
@@ -65,16 +66,6 @@ public class DxfViewport extends DxfEntity {
                         final boolean ignorePaperSpace )
             throws DxfReaderException {
         super( pdoc, pc, entityType, ignorePaperSpace );
-    }
-
-    private void calcBoundingBox() {
-        final double x1 = _centerX - ( _width / 2 );
-        final double x2 = _centerX + ( _width / 2 );
-        final double y1 = _centerY - ( _height / 2 );
-        final double y2 = _centerY + ( _height / 2 );
-
-        _boundsMax = new Point2D( x2, y2 );
-        _boundsMin = new Point2D( x1, y1 );
     }
 
     public Point2D getBoundsMax() {
@@ -95,19 +86,35 @@ public class DxfViewport extends DxfEntity {
 
     @Override
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
 
-        _width = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
-        _height = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) );
+        _width
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
+        _height
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) );
 
-        _viewCenterX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
-        _viewCenterY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
+        _viewCenterX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
+        _viewCenterY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
 
-        _viewHeight = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE45 ) );
+        _viewHeight
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE45 ) );
         _viewWidth = ( _width * _viewHeight ) / _height;
 
-        _id = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE69 ) );
+        _id
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE69 ) );
 
         final double scaleFactor = _height / _viewHeight;
         _blockTransform = new Affine( new Scale( scaleFactor, scaleFactor ) );
@@ -120,4 +127,13 @@ public class DxfViewport extends DxfEntity {
         calcBoundingBox();
     }
 
+    private void calcBoundingBox() {
+        final double x1 = _centerX - ( _width / 2 );
+        final double x2 = _centerX + ( _width / 2 );
+        final double y1 = _centerY - ( _height / 2 );
+        final double y2 = _centerY + ( _height / 2 );
+
+        _boundsMax = new Point2D( x2, y2 );
+        _boundsMin = new Point2D( x1, y1 );
+    }
 }// class DxfViewport

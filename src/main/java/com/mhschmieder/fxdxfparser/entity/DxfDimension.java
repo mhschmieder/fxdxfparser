@@ -38,6 +38,7 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
 import javafx.scene.transform.Affine;
 
 public class DxfDimension extends DxfEntity {
@@ -66,6 +67,45 @@ public class DxfDimension extends DxfEntity {
     }
 
     @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        final DxfPairContainer pcdim = pc.getSubclassPairs( "AcDbDimension" );
+
+        _defPointX
+                =
+                NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE10 ) );
+        _defPointY
+                =
+                NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE20 ) );
+
+        _textPointX
+                =
+                NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE11 ) );
+        _textPointY
+                =
+                NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE21 ) );
+
+        // NOTE: This is commented out, because it causes run-time exceptions
+        // due to not parsing correctly. And as it isn't used anyway, it causes
+        // more problems than it solves. In actuality, we should mask for the
+        // first three bits and use those to determine the dimension type.
+        // _dimType = Integer.valueOf(pcdim.getValue(Dxf.CODE70)).intValue();
+
+        _text = pcdim.getValue( DxfGroupCodes.CODE1 );
+        _block = pcdim.getValue( DxfGroupCodes.CODE2 );
+        _dimStyle = pcdim.getValue( DxfGroupCodes.CODE3 );
+        _actualMeasurement = NumberUtilities.parseDouble( pcdim.getValue(
+                DxfGroupCodes.CODE42,
+                "0" ) );
+        _textRotation = NumberUtilities.parseDouble( pcdim.getValue(
+                DxfGroupCodes.CODE53,
+                "0" ) );
+        _horizontalDirection = NumberUtilities.parseDouble( pcdim.getValue(
+                DxfGroupCodes.CODE51,
+                "0" ) );
+    }
+
+    @Override
     public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
@@ -79,30 +119,4 @@ public class DxfDimension extends DxfEntity {
 
         return true;
     }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        final DxfPairContainer pcdim = pc.getSubclassPairs( "AcDbDimension" );
-
-        _defPointX = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE10 ) );
-        _defPointY = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE20 ) );
-
-        _textPointX = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE11 ) );
-        _textPointY = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE21 ) );
-
-        // NOTE: This is commented out, because it causes run-time exceptions
-        // due to not parsing correctly. And as it isn't used anyway, it causes
-        // more problems than it solves. In actuality, we should mask for the
-        // first three bits and use those to determine the dimension type.
-        // _dimType = Integer.valueOf(pcdim.getValue(Dxf.CODE70)).intValue();
-
-        _text = pcdim.getValue( DxfGroupCodes.CODE1 );
-        _block = pcdim.getValue( DxfGroupCodes.CODE2 );
-        _dimStyle = pcdim.getValue( DxfGroupCodes.CODE3 );
-        _actualMeasurement = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE42, "0" ) );
-        _textRotation = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE53, "0" ) );
-        _horizontalDirection = NumberUtilities.parseDouble( pcdim.getValue( DxfGroupCodes.CODE51, "0" ) );
-    }
-
 }// class DxfDimension

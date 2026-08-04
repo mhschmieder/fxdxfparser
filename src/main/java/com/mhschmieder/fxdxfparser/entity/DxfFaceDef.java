@@ -52,34 +52,45 @@ public class DxfFaceDef extends DxfEntity {
 
     public FaceType getFaceType() {
         FaceType faceType = FaceType.UNDEFINED;
-        
+
         switch ( _iv.length ) {
-        case 1:
-            faceType = FaceType.POINT;
-            break;
-        case 2:
-            faceType = FaceType.LINE;
-            break;
-        case 3:
-            faceType = FaceType.TRIANGLE;
-            break;
-        case 4:
-            faceType = FaceType.QUAD;
-            break;
-        default:
-            break; 
+            case 1:
+                faceType = FaceType.POINT;
+                break;
+            case 2:
+                faceType = FaceType.LINE;
+                break;
+            case 3:
+                faceType = FaceType.TRIANGLE;
+                break;
+            case 4:
+                faceType = FaceType.QUAD;
+                break;
+            default:
+                break;
         }
-        
+
         return faceType;
     }
 
     @Override
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     protected void parseEntityProperties( final DxfPairContainer pc ) {
-        final int iv1 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
-        final int iv2 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72, "-1" ) );
-        final int iv3 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73, "-1" ) );
-        final int iv4 = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74, "-1" ) );
+        final int iv1
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
+        final int iv2
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72,
+                                                             "-1" ) );
+        final int iv3
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE73,
+                                                             "-1" ) );
+        final int iv4
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE74,
+                                                             "-1" ) );
 
         if ( iv4 < 0 ) {
             if ( iv3 < 0 ) {
@@ -98,5 +109,4 @@ public class DxfFaceDef extends DxfEntity {
             _iv = new int[] { iv1, iv2, iv3, iv4 };
         }
     }
-
 }// class DxfFaceDef

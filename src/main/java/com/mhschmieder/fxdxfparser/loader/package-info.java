@@ -29,10 +29,7 @@
  * Project: https://github.com/mhschmieder/fxdxfparser
  */
 /**
- * This package is the high-level outer structure parser/loader for fxdxfparser.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
+ * This package is the high-level outer structure parser/loader for
+ * fxdxfparser.
  */
 package com.mhschmieder.fxdxfparser.loader;

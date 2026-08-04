@@ -39,10 +39,155 @@ import java.util.function.Consumer;
 
 public class DxfPairContainer {
 
+    private final List< DxfPair > _pairs;
+    private final int _subclassMarker = 100;
+
+    public DxfPairContainer() {
+        _pairs = new ArrayList<>( 1000 );
+    }
+
+    public void clear() {
+        _pairs.clear();
+    }
+
+    public List< DxfPair > getPairs() {
+        return _pairs;
+    }
+
+    public DxfPairContainer getSubclassPairs( final String pSubclass ) {
+        boolean pesca = false;
+        DxfPairContainer pairContainer = null;
+
+        for ( final DxfPair pair : _pairs ) {
+            if ( pesca ) {
+                if ( _subclassMarker == pair.getKey() ) {
+                    break; // Nuevo classMarker, se acabó el nuestro
+                }
+                else if ( pairContainer != null ) {
+                    pairContainer.add( pair.getKey(), pair.getValue() );
+                }
+            }
+            else {
+                if ( ( _subclassMarker == pair.getKey() ) && (
+                        pSubclass.compareTo( pair.getValue() ) == 0 ) ) {
+                    pairContainer = new DxfPairContainer();
+                    pesca = true;
+                }
+            }
+        }
+
+        return pairContainer;
+    }
+
+    public void add( final int pKey,
+                     final String pVal ) {
+        _pairs.add( new DxfPair( pKey, pVal ) );
+    }
+
+    // Sólo para DXF CODES (keys) fijos (no opcionales)
+    public String getSubclassValue( final int pKey,
+                                    final String pSubclass ) {
+        final Iterator< DxfPair > it = iterator();
+        while ( it.hasNext() ) {
+            final DxfPair pair = it.next();
+            if ( ( _subclassMarker == pair.getKey() )
+                 && pSubclass.equalsIgnoreCase( pair.getValue() ) ) {
+                return getValueAux( pKey, null, it );
+            }
+        }
+        return null;
+    }
+
+    private static String getValueAux( final int pKey,
+                                       final String pDefault,
+                                       final Iterator< DxfPair > pairIterator ) {
+        while ( pairIterator.hasNext() ) {
+            final DxfPair pair = pairIterator.next();
+            if ( pKey == pair.getKey() ) {
+                return pair.getValue();
+            }
+        }
+
+        return pDefault;
+    }
+
+    public Iterator< DxfPair > iterator() {
+        return _pairs.iterator();
+    }
+
+    /**
+     * null default return value
+     *
+     * @param pKey The key to use for the pair's value
+     * @return The value associated with the supplied key
+     * @see #getValueAux(int, String, Iterator)
+     */
+    public String getValue( final int pKey ) {
+        return getValueAux( pKey, null, iterator() );
+    }
+
+    public String getValue( final int pKey,
+                            final String pDefault ) {
+        return getValueAux( pKey, pDefault, iterator() );
+    }
+
+    /**
+     * This method finds the first occurrence of a specific DXF Group Code, and
+     * returns an Iterator that is ready to start looping over a section of the
+     * Entity that has repeated group codes, such as vertex coordinate sets.
+     *
+     * @param pKey The DXF Group Code that serves as the key to look up in the
+     *             overall pair structure
+     * @return An Iterator that is poised to start at the first instance of the
+     *         required key (DXF Group Code)
+     */
+    public Iterator< DxfPair > iterator( final int pKey ) {
+        final ListIterator< DxfPair > it = _pairs.listIterator();
+        final String s = getValueAux( pKey, null, it );
+        if ( s != null ) {
+            it.previous();
+            return it;
+        }
+
+        return null;
+    }
+
+    /**
+     * This method finds the first occurrence of a specific DXF Group Code, and
+     * returns an Iterator that is ready to start looping over a section of the
+     * Entity that has repeated group codes, such as vertex coordinate sets.
+     *
+     * @param pKey The DXF Group Code that serves as the key to look up in the
+     *             overall pair structure
+     * @return An Iterator that is poised to start at the first instance of the
+     *         required key (DXF Group Code)
+     */
+    public Iterator< String > iteratorForValue( final int pKey ) {
+        return new DxfPairContainerIterator( pKey );
+    }
+
+    public int size() {
+        return _pairs.size();
+    }
+
+    @SuppressWarnings( "nls" )
+    @Override
+    public String toString() {
+        final StringBuilder valret = new StringBuilder( "PAIRS: \n" );
+        for ( final DxfPair pair : _pairs ) {
+            valret.append( pair.getKey() );
+            valret.append( " / " );
+            valret.append( pair.getValue() );
+            valret.append( "\n" );
+        }
+
+        return valret.toString();
+    }
+
     private class DxfPairContainerIterator implements Iterator< String > {
-        private final int         _keyRef;
-        private String            _valueRef;
         final Iterator< DxfPair > _iter;
+        private final int _keyRef;
+        private String _valueRef;
 
         DxfPairContainerIterator( final int pKeyref ) {
             _keyRef = pKeyref;
@@ -91,150 +236,4 @@ public class DxfPairContainer {
             throw new UnsupportedOperationException();
         }
     }
-
-    private static String getValueAux( final int pKey,
-                                       final String pDefault,
-                                       final Iterator< DxfPair > pairIterator ) {
-        while ( pairIterator.hasNext() ) {
-            final DxfPair pair = pairIterator.next();
-            if ( pKey == pair.getKey() ) {
-                return pair.getValue();
-            }
-        }
-
-        return pDefault;
-    }
-
-    private final List< DxfPair > _pairs;
-
-    private final int             _subclassMarker = 100;
-
-    public DxfPairContainer() {
-        _pairs = new ArrayList<>( 1000 );
-    }
-
-    public void add( final int pKey, final String pVal ) {
-        _pairs.add( new DxfPair( pKey, pVal ) );
-    }
-
-    public void clear() {
-        _pairs.clear();
-    }
-
-    public List< DxfPair > getPairs() {
-        return _pairs;
-    }
-
-    public DxfPairContainer getSubclassPairs( final String pSubclass ) {
-        boolean pesca = false;
-        DxfPairContainer pairContainer = null;
-
-        for ( final DxfPair pair : _pairs ) {
-            if ( pesca ) {
-                if ( _subclassMarker == pair.getKey() ) {
-                    break; // Nuevo classMarker, se acabó el nuestro
-                }
-                else if ( pairContainer != null ) {
-                    pairContainer.add( pair.getKey(), pair.getValue() );
-                }
-            }
-            else {
-                if ( ( _subclassMarker == pair.getKey() )
-                        && ( pSubclass.compareTo( pair.getValue() ) == 0 ) ) {
-                    pairContainer = new DxfPairContainer();
-                    pesca = true;
-                }
-            }
-        }
-
-        return pairContainer;
-    }
-
-    // Sólo para DXF CODES (keys) fijos (no opcionales)
-    public String getSubclassValue( final int pKey, final String pSubclass ) {
-        final Iterator< DxfPair > it = iterator();
-        while ( it.hasNext() ) {
-            final DxfPair pair = it.next();
-            if ( ( _subclassMarker == pair.getKey() )
-                    && pSubclass.equalsIgnoreCase( pair.getValue() ) ) {
-                return getValueAux( pKey, null, it );
-            }
-        }
-        return null;
-    }
-
-    /**
-     * null default return value
-     *
-     * @param pKey The key to use for the pair's value
-     * @return The value associated with the supplied key
-     * @see #getValueAux(int, String, Iterator)
-     */
-    public String getValue( final int pKey ) {
-        return getValueAux( pKey, null, iterator() );
-    }
-
-    public String getValue( final int pKey, final String pDefault ) {
-        return getValueAux( pKey, pDefault, iterator() );
-    }
-
-    public Iterator< DxfPair > iterator() {
-        return _pairs.iterator();
-    }
-
-    /**
-     * This method finds the first occurrence of a specific DXF Group Code,
-     * and returns an Iterator that is ready to start looping over a section of
-     * the Entity that has repeated group codes, such as vertex coordinate sets.
-     *
-     * @param pKey
-     *            The DXF Group Code that serves as the key to look up in the
-     *            overall pair structure
-     * @return An Iterator that is poised to start at the first instance of the
-     *         required key (DXF Group Code)
-     */
-    public Iterator< DxfPair > iterator( final int pKey ) {
-        final ListIterator< DxfPair > it = _pairs.listIterator();
-        final String s = getValueAux( pKey, null, it );
-        if ( s != null ) {
-            it.previous();
-            return it;
-        }
-
-        return null;
-    }
-
-    /**
-     * This method finds the first occurrence of a specific DXF Group Code,
-     * and returns an Iterator that is ready to start looping over a section of
-     * the Entity that has repeated group codes, such as vertex coordinate sets.
-     *
-     * @param pKey
-     *            The DXF Group Code that serves as the key to look up in the
-     *            overall pair structure
-     * @return An Iterator that is poised to start at the first instance of the
-     *         required key (DXF Group Code)
-     */
-    public Iterator< String > iteratorForValue( final int pKey ) {
-        return new DxfPairContainerIterator( pKey );
-    }
-
-    public int size() {
-        return _pairs.size();
-    }
-
-    @SuppressWarnings("nls")
-    @Override
-    public String toString() {
-        final StringBuilder valret = new StringBuilder( "PAIRS: \n" );
-        for ( final DxfPair pair : _pairs ) {
-            valret.append( pair.getKey() );
-            valret.append( " / " );
-            valret.append( pair.getValue() );
-            valret.append( "\n" );
-        }
-
-        return valret.toString();
-    }
-
 }// class DxfPairContainer

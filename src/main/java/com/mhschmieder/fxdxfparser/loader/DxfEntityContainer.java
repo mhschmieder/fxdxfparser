@@ -35,5 +35,4 @@ import com.mhschmieder.fxdxfparser.entity.DxfEntity;
 public interface DxfEntityContainer {
 
     void addEntity( DxfEntity entity );
-
 }// interface DxfEntityContainer

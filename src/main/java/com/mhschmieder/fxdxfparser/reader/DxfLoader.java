@@ -36,28 +36,21 @@ import com.mhschmieder.fxdxfparser.physics.DxfDistanceUnit;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.fxdxfparser.structure.DxfStatus;
 import com.mhschmieder.jcommons.io.FileStatus;
-import javafx.scene.transform.Affine;
 
 import java.io.BufferedReader;
+
+import javafx.scene.transform.Affine;
 
 /**
  * DxfLoader imports an AutoCAD DXF file into JavaFX as 2D Scene Graph Nodes.
  */
 public class DxfLoader {
 
-    private String      _currentBlock;
+    private String _currentBlock;
     private DxfDocument _dxfDoc;
 
     public DxfLoader() {
         _currentBlock = DxfDocument.MODEL_BLOCK;
-    }
-
-    /** Clear the document and nullify its reference, to free up resources. */
-    public final void clearDocument() {
-        if ( _dxfDoc != null ) {
-            _dxfDoc.clearDocument();
-            _dxfDoc = null;
-        }
     }
 
     /**
@@ -65,22 +58,33 @@ public class DxfLoader {
      * z=0, using JavaFX Shapes as the target, hosted by a geometry container
      * that holds the generic JavaFX Shape conversions.
      *
-     * @param dxfShapeContainer
-     *            The Geometry Container for the generic converted Shapes, as
-     *            JavaFX Geometry Nodes
+     * @param dxfShapeContainer The Geometry Container for the generic converted
+     *                          Shapes, as JavaFX Geometry Nodes
      */
     public final void convertToFxShapes( final DxfShapeContainer dxfShapeContainer ) {
         // Vectorize the entire Model Space block into generic shapes.
         final DxfBlock dxfBlock = _dxfDoc.getBlock( _currentBlock );
         final Affine defaultAffine = new Affine();
         final double defaultStrokeScale = 1.0d;
-        dxfBlock.convertToFxShapes( dxfShapeContainer, defaultAffine, defaultStrokeScale );
+        dxfBlock.convertToFxShapes( dxfShapeContainer,
+                                    defaultAffine,
+                                    defaultStrokeScale );
 
         // Clear the now-redundant and unneeded Model Space Block.
         dxfBlock.clearBlock();
 
         // Also clear the now-redundant DXF Document container.
         clearDocument();
+    }
+
+    /**
+     * Clear the document and nullify its reference, to free up resources.
+     */
+    public final void clearDocument() {
+        if ( _dxfDoc != null ) {
+            _dxfDoc.clearDocument();
+            _dxfDoc = null;
+        }
     }
 
     /**
@@ -92,8 +96,28 @@ public class DxfLoader {
         return _currentBlock;
     }
 
+    /**
+     * Establece el bloque que se añadirá a la escena.
+     *
+     * @param block nombre del bloque
+     * @see DxfDocument#getBlockNames
+     */
+    public final void setCurrentBlock( final String block ) {
+        if ( block == null ) {
+            throw new IllegalArgumentException();
+        }
+
+        _currentBlock = block;
+    }
+
     public final DxfDistanceUnit getDistanceUnit() {
-        return isDocumentValid() ? _dxfDoc.getDistanceUnit() : DxfDistanceUnit.UNITLESS;
+        return isDocumentValid()
+               ? _dxfDoc.getDistanceUnit()
+               : DxfDistanceUnit.UNITLESS;
+    }
+
+    public final boolean isDocumentValid() {
+        return _dxfDoc != null;
     }
 
     /**
@@ -106,23 +130,33 @@ public class DxfLoader {
     }
 
     public final DxfStatus getDxfStatus() {
-        return isDocumentValid() ? _dxfDoc.getDxfStatus() : null;
+        return isDocumentValid()
+               ? _dxfDoc.getDxfStatus()
+               : null;
     }
 
     public final double getLimitsMaxX() {
-        return isDocumentValid() ? _dxfDoc.getLimitsMaxX() : 0.0d;
+        return isDocumentValid()
+               ? _dxfDoc.getLimitsMaxX()
+               : 0.0d;
     }
 
     public final double getLimitsMaxY() {
-        return isDocumentValid() ? _dxfDoc.getLimitsMaxY() : 0.0d;
+        return isDocumentValid()
+               ? _dxfDoc.getLimitsMaxY()
+               : 0.0d;
     }
 
     public final double getLimitsMinX() {
-        return isDocumentValid() ? _dxfDoc.getLimitsMinX() : 0.0d;
+        return isDocumentValid()
+               ? _dxfDoc.getLimitsMinX()
+               : 0.0d;
     }
 
     public final double getLimitsMinY() {
-        return isDocumentValid() ? _dxfDoc.getLimitsMinY() : 0.0d;
+        return isDocumentValid()
+               ? _dxfDoc.getLimitsMinY()
+               : 0.0d;
     }
 
     // Invalidate (i.e. nullify) the document reference so it isn't accidentally
@@ -132,22 +166,18 @@ public class DxfLoader {
         _dxfDoc = null;
     }
 
-    public final boolean isDocumentValid() {
-        return _dxfDoc != null;
-    }
-
     /**
      * Parse the DXF Blocks and Entities from Model Space (ignore Paper Space).
      * <p>
      * NOTE: Actual conversion to JavaFX Shape Nodes is done later, after the
-     *  file stream has closed, as it is best not to leave file streams open for
-     *  very long.
+     * file stream has closed, as it is best not to leave file streams open for
+     * very long.
      *
-     * @param bufferedReader
-     *            The buffered reader that wraps the DXF file stream
-     * @param graphicsImportLoggingEnabled
-     *            Flag for whether the DXF Loader should log specifics of the
-     *            graphics import or not
+     * @param bufferedReader               The buffered reader that wraps the
+     *                                     DXF file stream
+     * @param graphicsImportLoggingEnabled Flag for whether the DXF Loader
+     *                                     should log specifics of the graphics
+     *                                     import or not
      * @return The File Status code, either to indicate errors in parsing
      */
     public FileStatus loadModelSpace( final BufferedReader bufferedReader,
@@ -184,16 +214,19 @@ public class DxfLoader {
      * Carga el archivo DXF. Una vez invocado este método, se pueden acceder al
      * resto de métodos de esta clase, como getDocument.
      *
-     * @param bufferedReader Buffered Reader to store the loaded DXF document
-     * @param ignorePaperSpace {@code true} if Paper Space block should be ignored
-     * @param logDxfStatus {@code true} if the status of DXF load should be logged
+     * @param bufferedReader   Buffered Reader to store the loaded DXF document
+     * @param ignorePaperSpace {@code true} if Paper Space block should be
+     *                         ignored
+     * @param logDxfStatus     {@code true} if the status of DXF load should be
+     *                         logged
      * @throws DxfReaderException if Out of Memory occurs during parsing
      */
     public final void loadDocument( final BufferedReader bufferedReader,
                                     final boolean ignorePaperSpace,
                                     final boolean logDxfStatus )
             throws DxfReaderException {
-        final DxfParser parser = new DxfParser( ignorePaperSpace, logDxfStatus );
+        final DxfParser parser = new DxfParser( ignorePaperSpace,
+                                                logDxfStatus );
         final DxfReader reader = new DxfReader( bufferedReader, parser );
 
         try {
@@ -204,25 +237,9 @@ public class DxfLoader {
             // it improves the ability of downstream clients to recover and also
             // to release unused memory as references go away much quicker.
             throw new DxfReaderException( "Error in DXF file: " //$NON-NLS-1$
-                    + e.getLocalizedMessage() );
+                                          + e.getLocalizedMessage() );
         }
 
         _dxfDoc = parser.getDocument();
     }
-
-    /**
-     * Establece el bloque que se añadirá a la escena.
-     *
-     * @param block
-     *            nombre del bloque
-     * @see DxfDocument#getBlockNames
-     */
-    public final void setCurrentBlock( final String block ) {
-        if ( block == null ) {
-            throw new IllegalArgumentException();
-        }
-
-        _currentBlock = block;
-    }
-
 }

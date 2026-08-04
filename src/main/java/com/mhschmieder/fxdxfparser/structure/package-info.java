@@ -30,9 +30,5 @@
  */
 /**
  * This package is the structural support for fxdxfparser.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
  */
 package com.mhschmieder.fxdxfparser.structure;

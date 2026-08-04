@@ -37,20 +37,21 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Affine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DxfPolyFaceMesh extends DxfPolyline {
 
     protected List< DxfFaceDef > _faces;
 
-    protected int                     _numberOfVertices;
-    protected int                     _numberOfFaces;
+    protected int _numberOfVertices;
+    protected int _numberOfFaces;
 
     public DxfPolyFaceMesh( final DxfDocument pdoc,
                             final DxfPairContainer pc,
@@ -75,6 +76,16 @@ public class DxfPolyFaceMesh extends DxfPolyline {
     }
 
     @Override
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        super.parseEntityProperties( pc );
+
+        _numberOfVertices = NumberUtilities.parseInteger( pc.getValue(
+                DxfGroupCodes.CODE71 ) );
+        _numberOfFaces = NumberUtilities.parseInteger( pc.getValue(
+                DxfGroupCodes.CODE72 ) );
+    }
+
+    @Override
     public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
@@ -91,25 +102,26 @@ public class DxfPolyFaceMesh extends DxfPolyline {
         for ( final DxfFaceDef face : _faces ) {
             int numberOfVertices = 0;
             switch ( face.getFaceType() ) {
-            case UNDEFINED:
-                break;
-            case POINT:
-                numberOfVertices = 1;
-                break;
-            case LINE:
-                numberOfVertices = 2;
-                break;
-            case TRIANGLE:
-                numberOfVertices = 3;
-                break;
-            case QUAD:
-                numberOfVertices = 4;
-                break;
-            default:
-                break;
+                case UNDEFINED:
+                    break;
+                case POINT:
+                    numberOfVertices = 1;
+                    break;
+                case LINE:
+                    numberOfVertices = 2;
+                    break;
+                case TRIANGLE:
+                    numberOfVertices = 3;
+                    break;
+                case QUAD:
+                    numberOfVertices = 4;
+                    break;
+                default:
+                    break;
             }
 
-            final List< Double > coordinates = new ArrayList<>( 2 * numberOfVertices );
+            final List< Double > coordinates = new ArrayList<>(
+                    2 * numberOfVertices );
             for ( int i = 0; i < numberOfVertices; i++ ) {
                 // NOTE: All of these are base 1 to 0.
                 final DxfVertex vertex = _vertices.get( face._iv[ i ] - 1 );
@@ -120,7 +132,8 @@ public class DxfPolyFaceMesh extends DxfPolyline {
             }
 
             final Polygon polygon = new Polygon();
-            final ObservableList< Double > polygonCoordinates = polygon.getPoints();
+            final ObservableList< Double > polygonCoordinates
+                    = polygon.getPoints();
             polygonCoordinates.addAll( coordinates );
 
             // Polyface3D is supposed to be filled with its stroke color.
@@ -135,13 +148,4 @@ public class DxfPolyFaceMesh extends DxfPolyline {
 
         return true;
     }
-
-    @Override
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        super.parseEntityProperties( pc );
-
-        _numberOfVertices = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE71 ) );
-        _numberOfFaces = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE72 ) );
-    }
-
 }// class DxfPolyFaceMesh

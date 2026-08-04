@@ -36,32 +36,38 @@ import com.mhschmieder.fxdxfparser.reader.DxfGroupCodes;
 import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
-import javafx.geometry.Point2D;
-import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.geometry.Point2D;
+import javafx.scene.transform.Affine;
+
 public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
 
-    private final DxfDocument            _dxfDoc;
-
-    /** Nombre del bloque */
-    public String                        _name;
-
-    /** Punto de inserción */
-    private Point2D                      _origin;
-
-    private int                          _flags;
+    private final DxfDocument _dxfDoc;
     private final List< DxfEntity > _entities;
-    private PropertyOverriding           _propertyOverriding;
+    /**
+     * Nombre del bloque
+     */
+    public String _name;
+    /**
+     * Punto de inserción
+     */
+    private Point2D _origin;
+    private int _flags;
+    private PropertyOverriding _propertyOverriding;
 
     // **** Propiedades provisionales: ****
-    /** Tipo de línea byBlock */
-    private DxfLineType                  _linetype;
+    /**
+     * Tipo de línea byBlock
+     */
+    private DxfLineType _linetype;
 
-    /** Color byBlock */
-    private int                          _colorIndex;
+    /**
+     * Color byBlock
+     */
+    private int _colorIndex;
 
     // Atributos del bloque
     // private ArrayList< DxfAttrib > _attributes;
@@ -76,6 +82,25 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
         parse( pc, pname );
     }
 
+    private void parse( final DxfPairContainer pc,
+                        final String name ) {
+        initBlock( name,
+                   NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) ), // x
+                   NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) ), // y
+                   NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS ) ) ); // flags
+    }
+
+    private void initBlock( final String pname,
+                            final double px,
+                            final double py,
+                            final int pflags ) {
+        _origin = new Point2D( px, py );
+        _name = pname;
+        _flags = pflags;
+        _colorIndex = 7;
+        _linetype = null;
+    }
+
     public DxfBlock( final DxfDocument doc,
                      final String name,
                      final double x,
@@ -87,6 +112,20 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
 
         initBlock( name, x, y, flags );
     }
+
+    // public final DxfAttrib getAttribute( final String tag ) {
+    // if ( _attributes == null ) {
+    // return null;
+    // }
+    //
+    // for ( final DxfAttrib attribute : _attributes ) {
+    // if ( attribute._tag.equalsIgnoreCase( tag ) ) {
+    // return attribute;
+    // }
+    // }
+    //
+    // return null;
+    // }
 
     @Override
     public void addEntity( final DxfEntity entity ) {
@@ -105,20 +144,6 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
         // }
     }
 
-    // public final DxfAttrib getAttribute( final String tag ) {
-    // if ( _attributes == null ) {
-    // return null;
-    // }
-    //
-    // for ( final DxfAttrib attribute : _attributes ) {
-    // if ( attribute._tag.equalsIgnoreCase( tag ) ) {
-    // return attribute;
-    // }
-    // }
-    //
-    // return null;
-    // }
-
     @Override
     public boolean convertToFxShapes( final DxfShapeContainer geometryContainer,
                                       final Affine transform,
@@ -130,8 +155,10 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
         int numberOfFailures = 0;
         for ( final DxfEntity dxfEntity : _entities ) {
             dxfEntity.setCurrentPropertyOverriding( _propertyOverriding );
-            final boolean succeeded = dxfEntity
-                    .convertToFxShapes( geometryContainer, transform, strokeScale );
+            final boolean succeeded = dxfEntity.convertToFxShapes(
+                    geometryContainer,
+                    transform,
+                    strokeScale );
             if ( !succeeded ) {
                 numberOfFailures++;
             }
@@ -151,6 +178,15 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
         return _linetype;
     }
 
+    public void setCurrentLineType( final DxfLineType linetype ) {
+        _linetype = linetype;
+    }
+
+    // public final void setCurrentAttributes( final ArrayList< DxfAttrib >
+    // attributes ) {
+    // _attributes = attributes;
+    // }
+
     public int getEntitiesCount() {
         return _entities.size();
     }
@@ -159,39 +195,11 @@ public final class DxfBlock implements DxfDrawable, DxfEntityContainer {
         return _name;
     }
 
-    private void initBlock( final String pname,
-                            final double px,
-                            final double py,
-                            final int pflags ) {
-        _origin = new Point2D( px, py );
-        _name = pname;
-        _flags = pflags;
-        _colorIndex = 7;
-        _linetype = null;
-    }
-
-    // public final void setCurrentAttributes( final ArrayList< DxfAttrib >
-    // attributes ) {
-    // _attributes = attributes;
-    // }
-
-    private void parse( final DxfPairContainer pc, final String name ) {
-        initBlock( name,
-                   NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) ), // x
-                   NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) ), // y
-                   NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS ) ) ); // flags
-    }
-
     public void setCurrentColor( final int color ) {
         _colorIndex = color;
-    }
-
-    public void setCurrentLineType( final DxfLineType linetype ) {
-        _linetype = linetype;
     }
 
     public void setPropertyOverriding( final PropertyOverriding propertyOverriding ) {
         _propertyOverriding = propertyOverriding;
     }
-
 }// class DxfBlock

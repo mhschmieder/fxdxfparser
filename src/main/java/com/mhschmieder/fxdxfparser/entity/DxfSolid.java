@@ -37,27 +37,28 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Affine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DxfSolid extends DxfEntity {
 
     protected static final int NUMBER_OF_VERTICES = 4;
 
-    protected double[]         _xCoordinates;
-    protected double[]         _yCoordinates;
-    protected double[]         _zCoordinates;
+    protected double[] _xCoordinates;
+    protected double[] _yCoordinates;
+    protected double[] _zCoordinates;
 
-    protected double           _thickness;
+    protected double _thickness;
 
-    protected double           _extrusionX;
-    protected double           _extrusionY;
-    protected double           _extrusionZ;
+    protected double _extrusionX;
+    protected double _extrusionY;
+    protected double _extrusionZ;
 
     public DxfSolid( final DxfDocument pdoc,
                      final DxfPairContainer pc,
@@ -80,7 +81,8 @@ public class DxfSolid extends DxfEntity {
         // NOTE: AutoCAD does not necessarily use the four points in the
         // order in which they are given; it treats them as a pair of pairs,
         // and may change the order, resulting in illegal self-intersection.
-        final List< Double > coordinates = new ArrayList<>( 2 * NUMBER_OF_VERTICES );
+        final List< Double > coordinates = new ArrayList<>(
+                2 * NUMBER_OF_VERTICES );
         for ( int i = 0; i < NUMBER_OF_VERTICES; i++ ) {
             final int j = 2 * i;
             coordinates.add( j, Double.valueOf( _xCoordinates[ i ] ) );
@@ -105,33 +107,56 @@ public class DxfSolid extends DxfEntity {
     }
 
     @Override
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     protected void parseEntityProperties( final DxfPairContainer pc ) {
         _xCoordinates = new double[ NUMBER_OF_VERTICES ];
         _yCoordinates = new double[ NUMBER_OF_VERTICES ];
         _zCoordinates = new double[ NUMBER_OF_VERTICES ];
 
-        _xCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _yCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _zCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+        _xCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE10 ) );
+        _yCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE20 ) );
+        _zCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE30 ) );
 
-        _xCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _yCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _zCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
+        _xCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE11 ) );
+        _yCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE21 ) );
+        _zCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE31 ) );
 
-        _xCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
-        _yCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
-        _zCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE32 ) );
+        _xCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE12 ) );
+        _yCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE22 ) );
+        _zCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE32 ) );
 
-        _xCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE13 ) );
-        _yCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE23 ) );
-        _zCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE33 ) );
+        _xCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE13 ) );
+        _yCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE23 ) );
+        _zCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE33 ) );
 
-        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
+        _thickness
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS,
+                                                            "0" ) );
 
-        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
+        _extrusionX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X,
+                                                            "0" ) );
+        _extrusionY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y,
+                                                            "0" ) );
+        _extrusionZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z,
+                                                            "0" ) );
     }
-
 }// class DxfSolid

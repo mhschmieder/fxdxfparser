@@ -46,58 +46,52 @@ import java.util.Map;
 
 public final class DxfDocument {
 
-    /** Nombre del bloque "espacio modelo" */
-    public static final String             MODEL_BLOCK      = "*MODEL_SPACE";                             //$NON-NLS-1$
+    /**
+     * Nombre del bloque "espacio modelo"
+     */
+    public static final String MODEL_BLOCK = "*MODEL_SPACE";
+            //$NON-NLS-1$
 
-    /** Nombre del bloque "espacio papel" */
-    public static final String             PAPER_BLOCK      = "*PAPER_SPACE";                             //$NON-NLS-1$
+    /**
+     * Nombre del bloque "espacio papel"
+     */
+    public static final String PAPER_BLOCK = "*PAPER_SPACE";
+            //$NON-NLS-1$
 
     // Encapsulation of status of read and unread entities.
-    public final DxfStatus                 _dxfStatus;
-
+    public final DxfStatus _dxfStatus;
+    // Capa por defecto
+    private final DxfLayer _defaultLayer
+            = new DxfLayer( "",                           //$NON-NLS-1$
+                            0, 7, "CONTINUOUS" );               //$NON-NLS-1$
+    // Tipo por defecto
+    private final DxfLineType _defaultLineType
+            = new DxfLineType( "CONTINUOUS",              //$NON-NLS-1$
+                               0, 0, "Solid line",              //$NON-NLS-1$
+                               0, null, 0 );
     // Bloque "espacio modelo"
-    public DxfBlock                        _modelSpace;
-
+    public DxfBlock _modelSpace;
     // Bloque "espacio papel"
-    public DxfBlock                        _paperSpace;
-
+    public DxfBlock _paperSpace;
     // Lista de bloques
     private Map< String, DxfBlock > _blocks = new HashMap<>( 50 );
-
     // Distance Unit, referred to as Model Space Unit of Measurement.
-    private DxfDistanceUnit                _distanceUnit;
-
+    private DxfDistanceUnit _distanceUnit;
     // Escala linetype global
-    private double                         _linetypeScale;
-
+    private double _linetypeScale;
     // Limites
-    private double                         _limitsMinX;
-    private double                         _limitsMinY;
-    private double                         _limitsMaxX;
-    private double                         _limitsMaxY;
-
-    // Capa por defecto
-    private final DxfLayer                 _defaultLayer    = new DxfLayer( "",                           //$NON-NLS-1$
-                                                                            0,
-                                                                            7,
-                                                                            "CONTINUOUS" );               //$NON-NLS-1$
-    // Tipo por defecto
-    private final DxfLineType              _defaultLineType = new DxfLineType( "CONTINUOUS",              //$NON-NLS-1$
-                                                                               0,
-                                                                               0,
-                                                                               "Solid line",              //$NON-NLS-1$
-                                                                               0,
-                                                                               null,
-                                                                               0 );
-
+    private double _limitsMinX;
+    private double _limitsMinY;
+    private double _limitsMaxX;
+    private double _limitsMaxY;
     // Lista de entidades registradas
     private Map< String, DxfEntity > _refEntities = new HashMap<>( 500 );
 
     // Última entidad añadida al documento
-    private DxfEntity                      _lastEntity;
+    private DxfEntity _lastEntity;
 
     // Bloques usados como flechas de cota (dimension)
-    private List< String >            _arrows;
+    private List< String > _arrows;
 
     // =================== T A B L A S
     // ---- LAYERS
@@ -111,13 +105,19 @@ public final class DxfDocument {
         // today one can explicitly specify "unitless".
         _distanceUnit = DxfDistanceUnit.UNITLESS;
 
-        _dxfStatus = logDxfStatus ? new DxfStatus() : null;
+        _dxfStatus = logDxfStatus
+                     ? new DxfStatus()
+                     : null;
 
         // Estos dos bloques son fijos
         _modelSpace = new DxfBlock( this, MODEL_BLOCK, 0.0d, 0.0d, 0, 20 );
         addBlock( _modelSpace );
         _paperSpace = new DxfBlock( this, PAPER_BLOCK, 0.0d, 0.0d, 0, 10 );
         addBlock( _paperSpace );
+    }
+
+    public void addBlock( final DxfBlock pblock ) {
+        _blocks.put( pblock._name.toUpperCase(), pblock );
     }
 
     public void addArrowBlock( final String pblockName ) {
@@ -134,10 +134,6 @@ public final class DxfDocument {
         _arrows.add( pblockName ); // lo añade si no estaba ya
     }
 
-    public void addBlock( final DxfBlock pblock ) {
-        _blocks.put( pblock._name.toUpperCase(), pblock );
-    }
-
     public void addEntityByRef( final DxfEntity pent ) {
         _refEntities.put( pent.getHandle(), pent );
     }
@@ -147,7 +143,8 @@ public final class DxfDocument {
                           final int pColor,
                           final String pLinetype ) {
         final String layerName = pName.toUpperCase();
-        _tblLayer.put( layerName, new DxfLayer( layerName, pFlags, pColor, pLinetype ) );
+        _tblLayer.put( layerName,
+                       new DxfLayer( layerName, pFlags, pColor, pLinetype ) );
     }
 
     public void addLineType( final String pName,
@@ -199,10 +196,6 @@ public final class DxfDocument {
         }
     }
 
-    public DxfBlock getBlock( final String name ) {
-        return _blocks.get( name.toUpperCase() );
-    }
-
     /**
      * Obtiene los nombres de todos los bloques contenidos en el documento.
      *
@@ -225,12 +218,16 @@ public final class DxfDocument {
         return blockNames;
     }
 
+    public DxfDistanceUnit getDistanceUnit() {
+        return _distanceUnit;
+    }
+
     // public Graphics2D getDefaultGraphics2D() {
     // return _graphicsMemory;
     // }
 
-    public DxfDistanceUnit getDistanceUnit() {
-        return _distanceUnit;
+    public void setDistanceUnit( final DxfDistanceUnit distanceUnit ) {
+        _distanceUnit = distanceUnit;
     }
 
     public DxfStatus getDxfStatus() {
@@ -249,9 +246,12 @@ public final class DxfDocument {
         return _lastEntity;
     }
 
+    public void setLastAddedEntity( final DxfEntity pent ) {
+        _lastEntity = pent;
+    }
+
     /**
-     * @param pName
-     *            Nombre de la capa buscada
+     * @param pName Nombre de la capa buscada
      * @return objeto DxfLayer de nombre <code>pName</code>
      */
     public DxfLayer getLayer( final String pName ) {
@@ -312,8 +312,7 @@ public final class DxfDocument {
     /**
      * Este método es invocado cuando la lectura del DXF finaliza. Averigua los
      * bloques que serán usados como flechas de la entidad DIMENSION. Estos
-     * bloques se almacenan en la propiedad <CODE>
-     * arrows </CODE>.
+     * bloques se almacenan en la propiedad <CODE> arrows </CODE>.
      */
     public void initialize() {
         // Los bloques que forman las flechas de las dimensiones tienen color
@@ -330,26 +329,23 @@ public final class DxfDocument {
         }
     }
 
-    public void setDistanceUnit( final DxfDistanceUnit distanceUnit ) {
-        _distanceUnit = distanceUnit;
+    public DxfBlock getBlock( final String name ) {
+        return _blocks.get( name.toUpperCase() );
     }
 
     public void setGlobalLinetypeScale( final double pLScale ) {
         _linetypeScale = pLScale;
     }
 
-    public void setLastAddedEntity( final DxfEntity pent ) {
-        _lastEntity = pent;
-    }
-
-    public void setLimitsMax( final double limitsMaxX, final double limitsMaxY ) {
+    public void setLimitsMax( final double limitsMaxX,
+                              final double limitsMaxY ) {
         _limitsMaxX = limitsMaxX;
         _limitsMaxY = limitsMaxY;
     }
 
-    public void setLimitsMin( final double limitsMinX, final double limitsMinY ) {
+    public void setLimitsMin( final double limitsMinX,
+                              final double limitsMinY ) {
         _limitsMinX = limitsMinX;
         _limitsMinY = limitsMinY;
     }
-
 }// class DxfDocument

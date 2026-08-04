@@ -32,10 +32,11 @@ package com.mhschmieder.fxdxfparser.reader;
 
 public class DxfPair {
 
-    private int    _key;
+    private int _key;
     private String _value;
 
-    public DxfPair( final int pKey, final String pValue ) {
+    public DxfPair( final int pKey,
+                    final String pValue ) {
         _key = pKey;
         _value = pValue;
     }
@@ -44,16 +45,15 @@ public class DxfPair {
         return _key;
     }
 
-    public String getValue() {
-        return _value;
-    }
-
     public void setKey( final int pKey ) {
         _key = pKey;
+    }
+
+    public String getValue() {
+        return _value;
     }
 
     public void setValue( final String pValue ) {
         _value = pValue;
     }
-
 }// class DxfPair

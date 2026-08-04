@@ -34,6 +34,9 @@ package com.mhschmieder.fxdxfparser.geometry;
  * This is an enumeration of supported Face Types for DXF entities.
  */
 public enum FaceType {
-    UNDEFINED, POINT, LINE, TRIANGLE, QUAD;
-
+    UNDEFINED,
+    POINT,
+    LINE,
+    TRIANGLE,
+    QUAD;
 }// enum FaceType

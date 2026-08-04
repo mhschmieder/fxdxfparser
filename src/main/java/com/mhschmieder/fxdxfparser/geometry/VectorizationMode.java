@@ -34,6 +34,7 @@ package com.mhschmieder.fxdxfparser.geometry;
  * This is an enumeration of the supported Vectorization Modes.
  */
 public enum VectorizationMode {
-    GRADS, SCALE_GRADS, VERTEX;
-
+    GRADS,
+    SCALE_GRADS,
+    VERTEX;
 }// enum VectorizationMode

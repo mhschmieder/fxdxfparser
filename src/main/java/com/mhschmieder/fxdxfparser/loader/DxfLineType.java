@@ -35,26 +35,26 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * DxfLineType contiene la definición de un linetype de Autocad. La
- * información es extraída de la correspondiente entrada de la tabla LTYPE de
- * un archivo DXF.
- * <P>
+ * DxfLineType contiene la definición de un linetype de Autocad. La información
+ * es extraída de la correspondiente entrada de la tabla LTYPE de un archivo
+ * DXF.
+ * <p>
  * No soporta tipos de línea complejos (shapes, etc). Actualmente las linetypes
  * complejas no se cargan, con lo cual todas las primitivas que las usen
  * aparecerán como líneas continuas.
  */
 public final class DxfLineType {
 
-    private final String   _name;
-    private final String   _desc;
+    private final String _name;
+    private final String _desc;
 
     private final double[] _pattern;
-    private final double   _patternLength;
+    private final double _patternLength;
 
-    private final int      _patternItemCount;
+    private final int _patternItemCount;
 
-    private final int      _flags;
-    private final int      _complexFlags;
+    private final int _flags;
+    private final int _complexFlags;
 
     public DxfLineType( final String pName,
                         final int pFlags,
@@ -95,7 +95,7 @@ public final class DxfLineType {
      * concretamente, si el objeto no define ningún patrón (<code>
      * patternItemCount == 0</code> ), entonces es un tipo de línea continuo
      * (linetype CONTINUOUS de Autocad).
-     * 
+     *
      * @return {@code true} if the line type is continuous
      */
     public boolean isContinuous() {
@@ -106,7 +106,7 @@ public final class DxfLineType {
         return _patternItemCount == 0;
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     public Collection< Double > makeDashArray( final double lineTypeScale ) {
         // Clean up the descriptor to balance on/off patterns.
         String descriptionCorrected = _desc.trim();
@@ -132,7 +132,9 @@ public final class DxfLineType {
         //  LineTypeDef file. It is likely that the description is equivalent
         //  though, as it is the only field that is exposed via Active X API's.
         int dashArrayIndex = 0;
-        for ( int dashTypeIndex = 0; dashTypeIndex < numberOfDashes; dashTypeIndex++ ) {
+        for ( int dashTypeIndex = 0;
+              dashTypeIndex < numberOfDashes;
+              dashTypeIndex++ ) {
             double onLength = 3.0d;
             double offLength = 3.0d;
 
@@ -170,10 +172,9 @@ public final class DxfLineType {
     /**
      * @return nombre del tipo de línea y a continuación su descripción
      */
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     @Override
     public String toString() {
         return _name + " " + _desc;
     }
-
 }// class DxfLineType

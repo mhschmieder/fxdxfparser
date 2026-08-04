@@ -38,23 +38,21 @@ import java.util.Locale;
 
 public class DxfReader {
 
-    // Pila de un único par usada durante el analisis
-    private DxfPair              _cachePair;
-
     private final BufferedReader _inBuffer;
-    private final DxfParser      _parser;
-
+    private final DxfParser _parser;
+    private final boolean _ignoreControlString;
+    // Pila de un único par usada durante el analisis
+    private DxfPair _cachePair;
     // seguimiento del numero de líneas leidas
-    private int                  _line;
-
-    private final boolean        _ignoreControlString;
+    private int _line;
 
     // ----------------------------
     // DxfReader
     // Parametros pReader >> objeto Reader del que extraer el DXF
     // pTParser >> Clase que solicita el analisis del DXF
     // -----------------------------
-    public DxfReader( final BufferedReader pReader, final DxfParser pParser ) {
+    public DxfReader( final BufferedReader pReader,
+                      final DxfParser pParser ) {
         _cachePair = null;
         _inBuffer = pReader;
         _parser = pParser;
@@ -62,66 +60,73 @@ public class DxfReader {
         _ignoreControlString = pParser.returnControlStrings();
     }
 
-    private void eatUntil( final int pCode, final String pVal ) throws DxfReaderException {
+    private void eatUntil( final int pCode,
+                           final String pVal ) throws DxfReaderException {
         while ( true ) {
             final DxfPair pair = readPair();
-            if ( ( pair.getKey() == pCode ) && pair.getValue().equalsIgnoreCase( pVal ) ) {
+            if ( ( pair.getKey() == pCode ) && pair.getValue()
+                                                   .equalsIgnoreCase( pVal ) ) {
                 return;
             }
         }
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     private void parseBlocksSection() throws DxfReaderException {
         final DxfPairContainer struct = new DxfPairContainer();
 
         boolean blocksSectionParsing = true;
         while ( blocksSectionParsing ) {
             struct.clear();
-            final String name = parseStructure( struct ).toUpperCase( Locale.ENGLISH );
+            final String name
+                    = parseStructure( struct ).toUpperCase( Locale.ENGLISH );
             switch ( name ) {
-            case "ENDSEC":
-                blocksSectionParsing = false;
-                break;
-            case "BLOCK":
-                // Get the Entity Type for the Block.
-                final String val = struct.getValue( DxfGroupCodes.CODE2 ).toUpperCase();
-                _parser.markBlockStarted( struct, val );
-                break;
-            case "ENDBLK":
-                _parser.markBlockCompleted( struct );
-                break;
-            default:
-                // Enter the parsing for the Blocks section.
-                final EntityType entityType = EntityType.canonicalValueOf( name );
-                _parser.parseEntity( struct, entityType, true );
-                break;
+                case "ENDSEC":
+                    blocksSectionParsing = false;
+                    break;
+                case "BLOCK":
+                    // Get the Entity Type for the Block.
+                    final String val = struct.getValue( DxfGroupCodes.CODE2 )
+                                             .toUpperCase();
+                    _parser.markBlockStarted( struct, val );
+                    break;
+                case "ENDBLK":
+                    _parser.markBlockCompleted( struct );
+                    break;
+                default:
+                    // Enter the parsing for the Blocks section.
+                    final EntityType entityType = EntityType.canonicalValueOf(
+                            name );
+                    _parser.parseEntity( struct, entityType, true );
+                    break;
             }
         }
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     private void parseEntitiesSection() throws DxfReaderException {
         final DxfPairContainer struct = new DxfPairContainer();
 
         boolean entitiesSectionParsing = true;
         while ( entitiesSectionParsing ) {
             struct.clear();
-            final String name = parseStructure( struct ).toUpperCase( Locale.ENGLISH );
+            final String name
+                    = parseStructure( struct ).toUpperCase( Locale.ENGLISH );
             switch ( name ) {
-            case "ENDSEC":
-                entitiesSectionParsing = false;
-                break;
-            default:
-                // Enter the parsing for the Entities section.
-                final EntityType entityType = EntityType.canonicalValueOf( name );
-                _parser.parseEntity( struct, entityType, false );
-                break;
+                case "ENDSEC":
+                    entitiesSectionParsing = false;
+                    break;
+                default:
+                    // Enter the parsing for the Entities section.
+                    final EntityType entityType = EntityType.canonicalValueOf(
+                            name );
+                    _parser.parseEntity( struct, entityType, false );
+                    break;
             }
         }
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     private void parseHeaderSection() throws DxfReaderException {
         final DxfPairContainer struct = new DxfPairContainer();
 
@@ -129,13 +134,13 @@ public class DxfReader {
         while ( headerSectionParsing ) {
             final String name = parseStructure( struct );
             switch ( name ) {
-            case "ENDSEC":
-                headerSectionParsing = false;
-                break;
-            default:
-                // Enter the parsing for the Header Variables.
-                _parser.parseHeaderVariables( struct );
-                break;
+                case "ENDSEC":
+                    headerSectionParsing = false;
+                    break;
+                default:
+                    // Enter the parsing for the Header Variables.
+                    _parser.parseHeaderVariables( struct );
+                    break;
             }
         }
     }
@@ -149,8 +154,9 @@ public class DxfReader {
     // la estructura
     // (String) -> el nombre de la estructura tal y como aparece en el DXF
     // -----------------------------
-    @SuppressWarnings("nls")
-    private String parseStructure( final DxfPairContainer struct ) throws DxfReaderException {
+    @SuppressWarnings( "nls" )
+    private String parseStructure( final DxfPairContainer struct )
+            throws DxfReaderException {
         boolean isFirst = true; // Una estructura no siempre comienza por 0, en
         // cuyo caso la estructura no tiene nombre
         String structName = "";
@@ -171,7 +177,8 @@ public class DxfReader {
                 ignoreOn = !ignoreOn;
             }
 
-            if ( ( codeint < 0 ) || ignoreOn ) {}
+            if ( ( codeint < 0 ) || ignoreOn ) {
+            }
             else if ( codeint > 0 ) {
                 struct.add( code, val );
             }
@@ -189,66 +196,68 @@ public class DxfReader {
         return structName;
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     private void parseTable( final DxfPairContainer struct ) {
         // tipo de la tabla
-        final String val = struct.getValue( DxfGroupCodes.CODE2 ).toUpperCase( Locale.ENGLISH );
+        final String val = struct.getValue( DxfGroupCodes.CODE2 )
+                                 .toUpperCase( Locale.ENGLISH );
         switch ( val ) {
-        case "APPID":
-            _parser.markTableAppIdStarted( struct );
-            break;
-        case "BLOCK_RECORD":
-            _parser.markTableBlockStarted( struct );
-            break;
-        case "DIMSTYLE":
-            _parser.markTableDimStyleStarted( struct );
-            break;
-        case "LAYER":
-            _parser.markTableLayerStarted( struct );
-            break;
-        case "STYLE":
-            _parser.markTableStyleStarted( struct );
-            break;
-        case "LTYPE":
-            _parser.markTableLtypeStarted( struct );
-            break;
-        case "UCS":
-            _parser.markTableUcsStarted( struct );
-            break;
-        case "VIEW":
-            _parser.markTableViewStarted( struct );
-            break;
-        case "VPORT":
-            _parser.markTableVportStarted( struct );
-            break;
-        default:
-            _parser.markUnknownTableStarted( struct );
-            break;
+            case "APPID":
+                _parser.markTableAppIdStarted( struct );
+                break;
+            case "BLOCK_RECORD":
+                _parser.markTableBlockStarted( struct );
+                break;
+            case "DIMSTYLE":
+                _parser.markTableDimStyleStarted( struct );
+                break;
+            case "LAYER":
+                _parser.markTableLayerStarted( struct );
+                break;
+            case "STYLE":
+                _parser.markTableStyleStarted( struct );
+                break;
+            case "LTYPE":
+                _parser.markTableLtypeStarted( struct );
+                break;
+            case "UCS":
+                _parser.markTableUcsStarted( struct );
+                break;
+            case "VIEW":
+                _parser.markTableViewStarted( struct );
+                break;
+            case "VPORT":
+                _parser.markTableVportStarted( struct );
+                break;
+            default:
+                _parser.markUnknownTableStarted( struct );
+                break;
         }
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     private void parseTablesSection() throws DxfReaderException {
         final DxfPairContainer struct = new DxfPairContainer();
 
         boolean tablesSectionParsing = true;
         while ( tablesSectionParsing ) {
             struct.clear();
-            final String name = parseStructure( struct ).toUpperCase( Locale.ENGLISH );
+            final String name
+                    = parseStructure( struct ).toUpperCase( Locale.ENGLISH );
             switch ( name ) {
-            case "ENDSEC":
-                tablesSectionParsing = false;
-                break;
-            case "TABLE":
-                parseTable( struct );
-                break;
-            case "ENDTAB":
-                _parser.markTableCompleted();
-                break;
-            default:
-                // Enter the parsing for the Tables section.
-                _parser.parseTable( struct, name );
-                break;
+                case "ENDSEC":
+                    tablesSectionParsing = false;
+                    break;
+                case "TABLE":
+                    parseTable( struct );
+                    break;
+                case "ENDTAB":
+                    _parser.markTableCompleted();
+                    break;
+                default:
+                    // Enter the parsing for the Tables section.
+                    _parser.parseTable( struct, name );
+                    break;
             }
         }
     }
@@ -275,12 +284,16 @@ public class DxfReader {
         }
         catch ( final NumberFormatException nfe ) {
             nfe.printStackTrace();
-            throw new DxfReaderException( "Invalid DXF file: DXF Code is not an integer at line " //$NON-NLS-1$
+            throw new DxfReaderException(
+                    "Invalid DXF file: DXF Code is not an integer at line "
+                    //$NON-NLS-1$
                     + _line + ". Is this a binary file?" ); //$NON-NLS-1$
         }
         catch ( final IOException ioe ) {
             ioe.printStackTrace();
-            throw new DxfReaderException( "Invalid DXF file: DXF Code is not text-readable at line " //$NON-NLS-1$
+            throw new DxfReaderException(
+                    "Invalid DXF file: DXF Code is not text-readable at line "
+                    //$NON-NLS-1$
                     + _line + ". Is this a binary file?" ); //$NON-NLS-1$
         }
         catch ( final NullPointerException npe ) {
@@ -297,7 +310,7 @@ public class DxfReader {
     // la clase cliente DXFTarget
     // Parametros
     // -----------------------------
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     public void runReader() throws DxfReaderException {
         DxfPair pair = readPair();
 
@@ -306,47 +319,47 @@ public class DxfReader {
             final int code = pair.getKey();
             final String value = pair.getValue().toUpperCase( Locale.ENGLISH );
             switch ( code ) {
-            case 0:
-                switch ( value ) {
-                case "EOF":
-                    endOfFile = true;
-                    continue;
-                case "ENDSEC":
+                case 0:
+                    switch ( value ) {
+                        case "EOF":
+                            endOfFile = true;
+                            continue;
+                        case "ENDSEC":
+                            break;
+                        case "SECTION":
+                            break;
+                        default:
+                            break;
+                    }
                     break;
-                case "SECTION":
+                case 2:
+                    switch ( value ) {
+                        case "HEADER":
+                            parseHeaderSection();
+                            break;
+                        case "CLASSES":
+                            eatUntil( 0, "ENDSEC" );
+                            break;
+                        case "TABLES":
+                            parseTablesSection();
+                            break;
+                        case "BLOCKS":
+                            parseBlocksSection();
+                            break;
+                        case "ENTITIES":
+                            parseEntitiesSection();
+                            break;
+                        case "OBJECTS":
+                            eatUntil( 0, "ENDSEC" );
+                            break;
+                        default:
+                            eatUntil( 0, "ENDSEC" );
+                            break;
+                    }
                     break;
                 default:
+                    // Ignore all other codes at this level.
                     break;
-                }
-                break;
-            case 2:
-                switch ( value ) {
-                case "HEADER":
-                    parseHeaderSection();
-                    break;
-                case "CLASSES":
-                    eatUntil( 0, "ENDSEC" );
-                    break;
-                case "TABLES":
-                    parseTablesSection();
-                    break;
-                case "BLOCKS":
-                    parseBlocksSection();
-                    break;
-                case "ENTITIES":
-                    parseEntitiesSection();
-                    break;
-                case "OBJECTS":
-                    eatUntil( 0, "ENDSEC" );
-                    break;
-                default:
-                    eatUntil( 0, "ENDSEC" );
-                    break;
-                }
-                break;
-            default:
-                // Ignore all other codes at this level.
-                break;
             }
 
             pair = readPair();
@@ -354,5 +367,4 @@ public class DxfReader {
 
         _parser.read();
     }
-
 }// class DxfReader

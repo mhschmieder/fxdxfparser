@@ -40,44 +40,42 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
-import javafx.scene.transform.Affine;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.transform.Affine;
+
 public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
 
-    protected static final int        MAXIMUM_NUMBER_OF_VERTICES = 10;
+    public static final int QUAD = 5;
+    public static final int CUBIC = 6;
+    public static final int BEZIER = 8;
+    public static final int FLAG_CLOSED = 1;
+    public static final int FLAG_3DPOLYLINE = 8;
+    public static final int FLAG_POLYGON_MESH = 16;
+    public static final int FLAG_POLY_FACE_MESH = 64;
+    protected static final int MAXIMUM_NUMBER_OF_VERTICES = 10;
+    protected double _elevationX;
+    protected double _elevationY;
+    protected double _elevationZ;
 
-    public static final int           QUAD                       = 5;
-    public static final int           CUBIC                      = 6;
-    public static final int           BEZIER                     = 8;
+    protected double _thickness;
 
-    public static final int           FLAG_CLOSED                = 1;
-    public static final int           FLAG_3DPOLYLINE            = 8;
-    public static final int           FLAG_POLYGON_MESH          = 16;
-    public static final int           FLAG_POLY_FACE_MESH        = 64;
+    protected int _polyFlags;
+    protected double _startWidth;
+    protected double _endWidth;
+    protected int _surfaceType;
 
-    protected double                  _elevationX;
-    protected double                  _elevationY;
-    protected double                  _elevationZ;
+    protected double _extrusionX;
+    protected double _extrusionY;
+    protected double _extrusionZ;
 
-    protected double                  _thickness;
-
-    protected int                     _polyFlags;
-    protected double                  _startWidth;
-    protected double                  _endWidth;
-    protected int                     _surfaceType;
-
-    protected double                  _extrusionX;
-    protected double                  _extrusionY;
-    protected double                  _extrusionZ;
-
-    protected int                     _vertexCount;
-    protected boolean                 _hasWidth;
+    protected int _vertexCount;
+    protected boolean _hasWidth;
 
     protected List< DxfVertex > _controlPoints;
-    protected List< DxfVertex >  _vertices;
+    protected List< DxfVertex > _vertices;
     protected List< PolyVertex > _polyVertices;
 
     public DxfPolyline( final DxfDocument pdoc,
@@ -122,6 +120,64 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
         }
     }
 
+    protected boolean isClosed() {
+        return ( _polyFlags & FLAG_CLOSED ) != 0;
+    }
+
+    @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        _elevationX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10,
+                                                            "0" ) );
+        _elevationY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20,
+                                                            "0" ) );
+        _elevationZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30,
+                                                            "0" ) );
+
+        _thickness
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS,
+                                                            "0" ) );
+
+        _polyFlags
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS,
+                                                             "0" ) );
+
+        _startWidth
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40,
+                                                            "0" ) );
+        _endWidth
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41,
+                                                            "0" ) );
+
+        _surfaceType
+                =
+                NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE75,
+                                                             "0" ) );
+
+        _extrusionX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X,
+                                                            "0" ) );
+        _extrusionY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y,
+                                                            "0" ) );
+        _extrusionZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z,
+                                                            "0" ) );
+    }
+
     @Override
     public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
@@ -133,21 +189,18 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
             return false;
         }
 
-        final boolean succeeded = PolylineUtilities.convertToFxShapes( dxfShapeContainer,
-                                                                       transform,
-                                                                       strokeScale,
-                                                                       this,
-                                                                       isVertex2D(),
-                                                                       _polyVertices,
-                                                                       _vertices,
-                                                                       needClose(),
-                                                                       false );
+        final boolean succeeded = PolylineUtilities.convertToFxShapes(
+                dxfShapeContainer,
+                transform,
+                strokeScale,
+                this,
+                isVertex2D(),
+                _polyVertices,
+                _vertices,
+                needClose(),
+                false );
 
         return succeeded;
-    }
-
-    protected boolean isClosed() {
-        return ( _polyFlags & FLAG_CLOSED ) != 0;
     }
 
     protected boolean isDegenerate() {
@@ -159,30 +212,10 @@ public class DxfPolyline extends DxfEntity implements DxfEntityContainer {
     }
 
     protected boolean needClose() {
-        return ( ( _polyFlags & FLAG_CLOSED ) != 0 ) && ( PolylineUtilities
-                .compareVertex2D( _polyVertices.get( 0 ),
-                                  _polyVertices.get( _polyVertices.size() - 1 ) ) != 0 );
+        return ( ( _polyFlags & FLAG_CLOSED ) != 0 ) && (
+                PolylineUtilities.compareVertex2D( _polyVertices.get( 0 ),
+                                                   _polyVertices.get(
+                                                           _polyVertices.size()
+                                                           - 1 ) ) != 0 );
     }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _elevationX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10, "0" ) );
-        _elevationY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20, "0" ) );
-        _elevationZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30, "0" ) );
-
-        _thickness = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.THICKNESS, "0" ) );
-
-        _polyFlags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
-
-        _startWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
-        _endWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "0" ) );
-
-        _surfaceType = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.CODE75, "0" ) );
-
-        _extrusionX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _extrusionY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _extrusionZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
-    }
-
 }// class DxfPolyline

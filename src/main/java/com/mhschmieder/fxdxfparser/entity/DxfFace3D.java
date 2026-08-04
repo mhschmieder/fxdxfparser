@@ -37,28 +37,27 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Affine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DxfFace3D extends DxfEntity {
 
+    public static final int TRIANGLE = 1;
+    public static final int QUAD = 2;
     protected static final int MAXIMUM_NUMBER_OF_VERTICES = 4;
+    protected int _polygonType;
 
-    public static final int    TRIANGLE                   = 1;
-    public static final int    QUAD                       = 2;
+    protected double[] _xCoordinates;
+    protected double[] _yCoordinates;
+    protected double[] _zCoordinates;
 
-    protected int              _polygonType;
-
-    protected double[]         _xCoordinates;
-    protected double[]         _yCoordinates;
-    protected double[]         _zCoordinates;
-
-    protected int              _invisibleFlags;
+    protected int _invisibleFlags;
 
     public DxfFace3D( final DxfDocument pdoc,
                       final DxfPairContainer pc,
@@ -66,6 +65,55 @@ public class DxfFace3D extends DxfEntity {
                       final boolean ignorePaperSpace )
             throws DxfReaderException {
         super( pdoc, pc, entityType, ignorePaperSpace );
+    }
+
+    @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        _xCoordinates = new double[ MAXIMUM_NUMBER_OF_VERTICES ];
+        _yCoordinates = new double[ MAXIMUM_NUMBER_OF_VERTICES ];
+        _zCoordinates = new double[ MAXIMUM_NUMBER_OF_VERTICES ];
+
+        _xCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE10 ) );
+        _yCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE20 ) );
+        _zCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE30 ) );
+
+        _xCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE11 ) );
+        _yCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE21 ) );
+        _zCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE31 ) );
+
+        _xCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE12 ) );
+        _yCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE22 ) );
+        _zCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE32 ) );
+
+        _xCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE13 ) );
+        _yCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE23 ) );
+        _zCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE33 ) );
+
+        _invisibleFlags = NumberUtilities.parseInteger( pc.getValue(
+                DxfGroupCodes.FLAGS,
+                "0" ) );
+
+        if ( ( _xCoordinates[ 3 ] == _xCoordinates[ 2 ] ) && (
+                _yCoordinates[ 3 ] == _yCoordinates[ 2 ] ) && (
+                     _zCoordinates[ 3 ] == _zCoordinates[ 2 ] ) ) {
+            _polygonType = TRIANGLE;
+        }
+        else {
+            _polygonType = QUAD;
+        }
     }
 
     @Override
@@ -81,20 +129,21 @@ public class DxfFace3D extends DxfEntity {
         final int polygonType = getPolygonType();
         int numberOfVertices = 1;
         switch ( polygonType ) {
-        case TRIANGLE:
-            numberOfVertices = 3;
-            break;
-        case QUAD:
-            numberOfVertices = 4;
-            break;
-        default:
-            break;
+            case TRIANGLE:
+                numberOfVertices = 3;
+                break;
+            case QUAD:
+                numberOfVertices = 4;
+                break;
+            default:
+                break;
         }
 
         // NOTE: AutoCAD does not necessarily use the four points in the
         // order in which they are given; it treats them as a pair of pairs,
         // and may change the order, resulting in illegal self-intersection.
-        final List< Double > coordinates = new ArrayList<>( 2 * numberOfVertices );
+        final List< Double > coordinates = new ArrayList<>(
+                2 * numberOfVertices );
         for ( int i = 0; i < numberOfVertices; i++ ) {
             final int j = 2 * i;
             coordinates.add( j, Double.valueOf( _xCoordinates[ i ] ) );
@@ -123,40 +172,4 @@ public class DxfFace3D extends DxfEntity {
     public int getPolygonType() {
         return _polygonType;
     }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _xCoordinates = new double[ MAXIMUM_NUMBER_OF_VERTICES ];
-        _yCoordinates = new double[ MAXIMUM_NUMBER_OF_VERTICES ];
-        _zCoordinates = new double[ MAXIMUM_NUMBER_OF_VERTICES ];
-
-        _xCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _yCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _zCoordinates[ 0 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
-
-        _xCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _yCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _zCoordinates[ 1 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
-
-        _xCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE12 ) );
-        _yCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE22 ) );
-        _zCoordinates[ 2 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE32 ) );
-
-        _xCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE13 ) );
-        _yCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE23 ) );
-        _zCoordinates[ 3 ] = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE33 ) );
-
-        _invisibleFlags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
-
-        if ( ( _xCoordinates[ 3 ] == _xCoordinates[ 2 ] )
-                && ( _yCoordinates[ 3 ] == _yCoordinates[ 2 ] )
-                && ( _zCoordinates[ 3 ] == _zCoordinates[ 2 ] ) ) {
-            _polygonType = TRIANGLE;
-        }
-        else {
-            _polygonType = QUAD;
-        }
-    }
-
 }// class DxfFace3D

@@ -41,6 +41,8 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+import org.apache.commons.math3.util.FastMath;
+
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -51,7 +53,6 @@ import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
-import org.apache.commons.math3.util.FastMath;
 
 public class DxfEllipse extends DxfEntity {
 
@@ -81,6 +82,50 @@ public class DxfEllipse extends DxfEntity {
     }
 
     @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        _centerX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
+        _centerY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
+        _centerZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
+
+        _endMajorAxisOffsetX = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE11 ) );
+        _endMajorAxisOffsetY = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE21 ) );
+        _endMajorAxisOffsetZ = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE31 ) );
+
+        _normalX
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X,
+                                                            "0" ) );
+        _normalY
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y,
+                                                            "0" ) );
+        _normalZ
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z,
+                                                            "0" ) );
+
+        _ratioMinorAxis = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE40 ) );
+
+        _startAngle
+                = FastMath.toDegrees( NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE41 ) ) );
+        _endAngle
+                = FastMath.toDegrees( NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE42 ) ) );
+    }
+
+    @Override
     public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
@@ -102,8 +147,11 @@ public class DxfEllipse extends DxfEntity {
         if ( ( lineType == null ) || lineType.isContinuous() ) {
             if ( closed ) {
                 if ( _ratioMinorAxis == 1 ) {
-                    final double radius = FastMath.hypot( _endMajorAxisOffsetX, _endMajorAxisOffsetY );
-                    final Circle circle = new Circle( _centerX, _centerY, radius );
+                    final double radius = FastMath.hypot( _endMajorAxisOffsetX,
+                                                          _endMajorAxisOffsetY );
+                    final Circle circle = new Circle( _centerX,
+                                                      _centerY,
+                                                      radius );
 
                     circle.getTransforms().add( transform );
                     circle.setStroke( color );
@@ -119,22 +167,30 @@ public class DxfEllipse extends DxfEntity {
                     // NOTE: The ellipse must be made at the zero origin so
                     // that the rotation and translation factors can be applied
                     // in the correct order.
-                    final double radiusMajor = FastMath.hypot( _endMajorAxisOffsetX,
-                                                           _endMajorAxisOffsetY );
+                    final double radiusMajor = FastMath.hypot(
+                            _endMajorAxisOffsetX,
+                            _endMajorAxisOffsetY );
                     final double radiusMinor = radiusMajor * _ratioMinorAxis;
-                    final Ellipse ellipse = new Ellipse( 0.0d, 0.0d, radiusMajor, radiusMinor );
+                    final Ellipse ellipse = new Ellipse( 0.0d,
+                                                         0.0d,
+                                                         radiusMajor,
+                                                         radiusMinor );
 
                     // Find the rotation of the ellipse via the major axis, and
                     // translate to its center, in the correct order.
-                    final double theta = FastMath.atan2( _endMajorAxisOffsetY, _endMajorAxisOffsetX );
-                    final Rotate rotate = new Rotate( FastMath.toDegrees( theta ) );
-                    final Translate translate = new Translate( _centerX, _centerY );
+                    final double theta = FastMath.atan2( _endMajorAxisOffsetY,
+                                                         _endMajorAxisOffsetX );
+                    final Rotate rotate
+                            = new Rotate( FastMath.toDegrees( theta ) );
+                    final Translate translate = new Translate( _centerX,
+                                                               _centerY );
 
                     // NOTE: The transform that is passed in must be applied
                     // last (which means we must add it first), as it could be
                     // from a Block Reference, but this also means that we might
                     // see a translational offset that is incorrect?
-                    final ObservableList< Transform > transforms = ellipse.getTransforms();
+                    final ObservableList< Transform > transforms
+                            = ellipse.getTransforms();
                     transforms.add( transform );
                     transforms.add( translate );
                     transforms.add( rotate );
@@ -160,7 +216,8 @@ public class DxfEllipse extends DxfEntity {
                 // NOTE: The arc must be made at the zero origin so that the
                 // rotation and translation factors can be applied in the
                 // correct order.
-                final double radiusMajor = FastMath.hypot( _endMajorAxisOffsetX, _endMajorAxisOffsetY );
+                final double radiusMajor = FastMath.hypot( _endMajorAxisOffsetX,
+                                                           _endMajorAxisOffsetY );
                 final double radiusMinor = radiusMajor * _ratioMinorAxis;
                 double arcExtentDeg = _startAngle - _endAngle;
                 if ( _endAngle < _startAngle ) {
@@ -180,15 +237,18 @@ public class DxfEllipse extends DxfEntity {
                 // doesn't work correctly otherwise. But there doesn't seem to
                 // be a strong rationale for why the Normal to the Major Axis
                 // angle relative to the x-axis is needed.
-                final double theta = FastMath.atan2( _endMajorAxisOffsetY, _endMajorAxisOffsetX );
-                final Rotate rotate = new Rotate( FastMath.toDegrees( theta ) - 90d );
+                final double theta = FastMath.atan2( _endMajorAxisOffsetY,
+                                                     _endMajorAxisOffsetX );
+                final Rotate rotate = new Rotate(
+                        FastMath.toDegrees( theta ) - 90d );
                 final Translate translate = new Translate( _centerX, _centerY );
 
                 // NOTE: The transform that is passed in must be applied last
                 // (which means we must add it first), as it could be from a
                 // Block Reference, but this also means that we might see a
                 // translational offset that is incorrect?
-                final ObservableList< Transform > transforms = arc.getTransforms();
+                final ObservableList< Transform > transforms
+                        = arc.getTransforms();
                 transforms.add( transform );
                 transforms.add( translate );
                 transforms.add( rotate );
@@ -212,7 +272,8 @@ public class DxfEllipse extends DxfEntity {
         at.appendRotation( 90d, 0.0d, 0.0d );
         at.appendScale( _ratioMinorAxis, _ratioMinorAxis );
 
-        final Point2D endMajorAxis = new Point2D( _endMajorAxisOffsetX, _endMajorAxisOffsetY );
+        final Point2D endMajorAxis = new Point2D( _endMajorAxisOffsetX,
+                                                  _endMajorAxisOffsetY );
         final Point2D endMinorAxis = at.transform( endMajorAxis );
 
         final EllipticalArc2D arc = new EllipticalArc2D( _centerX,
@@ -221,9 +282,11 @@ public class DxfEllipse extends DxfEntity {
                                                          endMinorAxis,
                                                          _startAngle,
                                                          _endAngle );
-        final Vertex[] vertices = arc.normalizeGradients( PolylineUtilities.NUMBER_OF_GRADS );
+        final Vertex[] vertices
+                = arc.normalizeGradients( PolylineUtilities.NUMBER_OF_GRADS );
 
-        final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale() * _lineTypeScale;
+        final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale()
+                                     * _lineTypeScale;
         PolylineUtilities.convertToFxShapes( dxfShapeContainer,
                                              transform,
                                              strokeScale,
@@ -235,26 +298,4 @@ public class DxfEllipse extends DxfEntity {
 
         return true;
     }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        _centerX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        _centerY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-        _centerZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE30 ) );
-
-        _endMajorAxisOffsetX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE11 ) );
-        _endMajorAxisOffsetY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE21 ) );
-        _endMajorAxisOffsetZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE31 ) );
-
-        _normalX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_X, "0" ) );
-        _normalY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Y, "0" ) );
-        _normalZ = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.NORMAL_Z, "0" ) );
-
-        _ratioMinorAxis = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40 ) );
-
-        _startAngle = FastMath.toDegrees( NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41 ) ) );
-        _endAngle = FastMath.toDegrees( NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42 ) ) );
-    }
-
 }// class DxfEllipse

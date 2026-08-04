@@ -40,57 +40,20 @@ public class Point {
 
     public static final double DEFAULT_TOLERANCE = 0.0001d;
 
-    public double              _x;
-    public double              _y;
-    public double              _z;
+    public double _x;
+    public double _y;
+    public double _z;
 
     public Point() {
         this( 0.0d, 0.0d, 0.0d );
     }
 
-    public Point( final double x, final double y, final double z ) {
+    public Point( final double x,
+                  final double y,
+                  final double z ) {
         _x = x;
         _y = y;
         _z = z;
-    }
-
-    @Override
-    public boolean equals( final Object obj ) {
-        if ( this == obj ) {
-            return true;
-        }
-        if ( obj == null ) {
-            return false;
-        }
-        if ( getClass() != obj.getClass() ) {
-            return false;
-        }
-        final Point other = ( Point ) obj;
-
-        return ( ( FastMath.abs( _x - other.getX() ) <= DEFAULT_TOLERANCE )
-                && ( FastMath.abs( _y - other.getY() ) <= DEFAULT_TOLERANCE )
-                && ( FastMath.abs( _z - other.getZ() ) <= DEFAULT_TOLERANCE ) );
-    }
-
-    /**
-     * @return Returns the x-coordinate.
-     */
-    public final double getX() {
-        return _x;
-    }
-
-    /**
-     * @return Returns the y-coordinate.
-     */
-    public final double getY() {
-        return _y;
-    }
-
-    /**
-     * @return Returns the z-coordinate.
-     */
-    public final double getZ() {
-        return _z;
     }
 
     @Override
@@ -107,34 +70,70 @@ public class Point {
         return result;
     }
 
+    @Override
+    public boolean equals( final Object obj ) {
+        if ( this == obj ) {
+            return true;
+        }
+        if ( obj == null ) {
+            return false;
+        }
+        if ( getClass() != obj.getClass() ) {
+            return false;
+        }
+        final Point other = ( Point ) obj;
+
+        return ( ( FastMath.abs( _x - other.getX() ) <= DEFAULT_TOLERANCE ) && (
+                FastMath.abs( _y - other.getY() ) <= DEFAULT_TOLERANCE ) && (
+                         FastMath.abs( _z - other.getZ() )
+                         <= DEFAULT_TOLERANCE ) );
+    }
+
     /**
-     * @param x
-     *            The x-coordinate to set.
+     * @return Returns the x-coordinate.
+     */
+    public final double getX() {
+        return _x;
+    }
+
+    /**
+     * @param x The x-coordinate to set.
      */
     public final void setX( final double x ) {
         _x = x;
     }
 
     /**
-     * @param y
-     *            The y-coordinate to set.
+     * @return Returns the y-coordinate.
+     */
+    public final double getY() {
+        return _y;
+    }
+
+    /**
+     * @param y The y-coordinate to set.
      */
     public final void setY( final double y ) {
         _y = y;
     }
 
     /**
-     * @param z
-     *            The z-coordinate to set.
+     * @return Returns the z-coordinate.
+     */
+    public final double getZ() {
+        return _z;
+    }
+
+    /**
+     * @param z The z-coordinate to set.
      */
     public final void setZ( final double z ) {
         _z = z;
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     @Override
     public String toString() {
         return super.toString() + "[" + _x + ", " + _y + ", " + _z + "]";
     }
-
 }// class Point

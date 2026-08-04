@@ -42,15 +42,15 @@ import com.mhschmieder.jcommons.lang.NumberUtilities;
 public class DxfVertex extends DxfPoint {
 
     public static final int FLAG_CONTROLPOINT = 16;
-    public static final int FLAG_3DPOLYLINE   = 32;
-    public static final int FLAG_3DPOLYGON    = 64;
-    public static final int FLAG_3DPOLYFACE   = 128;
+    public static final int FLAG_3DPOLYLINE = 32;
+    public static final int FLAG_3DPOLYGON = 64;
+    public static final int FLAG_3DPOLYFACE = 128;
 
-    protected int           _flags;
+    protected int _flags;
 
-    private double          _startWidth;
-    private double          _endWidth;
-    private double          _bulge;
+    private double _startWidth;
+    private double _endWidth;
+    private double _bulge;
 
     public DxfVertex( final DxfDocument pdoc,
                       final DxfPairContainer pc,
@@ -61,18 +61,27 @@ public class DxfVertex extends DxfPoint {
     }
 
     // TODO: Find out if this method should be called somewhere.
-    public final EllipticalArc2D getArc( final double x2, final double y2 ) {
+    public final EllipticalArc2D getArc( final double x2,
+                                         final double y2 ) {
         final double bulge = getBulge();
         return ArcUtilities.getArc( bulge, _x, _y, x2, y2 );
     }
 
     public final double getBulge() {
-        final double bulge = isVertex2D() ? _bulge : 0.0d;
+        final double bulge = isVertex2D()
+                             ? _bulge
+                             : 0.0d;
         return bulge;
     }
 
+    public final boolean isVertex2D() {
+        return ( _flags < FLAG_3DPOLYLINE );
+    }
+
     public final double getEndWidth() {
-        final double endWidth = isVertex2D() ? _endWidth : 0.0d;
+        final double endWidth = isVertex2D()
+                                ? _endWidth
+                                : 0.0d;
         return endWidth;
     }
 
@@ -81,7 +90,9 @@ public class DxfVertex extends DxfPoint {
     }
 
     public final double getStartWidth() {
-        final double startWidth = isVertex2D() ? _startWidth : 0.0d;
+        final double startWidth = isVertex2D()
+                                  ? _startWidth
+                                  : 0.0d;
         return startWidth;
     }
 
@@ -89,20 +100,23 @@ public class DxfVertex extends DxfPoint {
         return ( ( _flags & FLAG_CONTROLPOINT ) != 0 );
     }
 
-    public final boolean isVertex2D() {
-        return ( _flags < FLAG_3DPOLYLINE );
-    }
-
     @Override
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     protected final void parseEntityProperties( final DxfPairContainer pc ) {
         super.parseEntityProperties( pc );
 
-        _startWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40, "0" ) );
-        _endWidth = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "0" ) );
-        _bulge = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42, "0" ) );
+        _startWidth
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE40,
+                                                            "0" ) );
+        _endWidth
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41,
+                                                            "0" ) );
+        _bulge = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42,
+                                                           "0" ) );
 
-        _flags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS, "0" ) );
+        _flags = NumberUtilities.parseInteger( pc.getValue( DxfGroupCodes.FLAGS,
+                                                            "0" ) );
     }
-
 }// class DxfVertex

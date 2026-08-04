@@ -48,8 +48,10 @@ public final class ArcUtilities {
         final double centerY = 0.5d * ( ( y2 + y ) + ( ( x2 - x ) * cotan ) );
         final double radius = FastMath.hypot( centerX - x, centerY - y );
 
-        double startAngle = FastMath.toDegrees( FastMath.atan( ( y - centerY ) / ( x - centerX ) ) );
-        double endAngle = FastMath.toDegrees( FastMath.atan( ( y2 - centerY ) / ( x2 - centerX ) ) );
+        double startAngle = FastMath.toDegrees( FastMath.atan(
+                ( y - centerY ) / ( x - centerX ) ) );
+        double endAngle = FastMath.toDegrees( FastMath.atan(
+                ( y2 - centerY ) / ( x2 - centerX ) ) );
 
         // atan devuelve un ángulo correcto entre -pi/2 y pi/2 por tanto hay
         // que corregir el ángulo si x < 0
@@ -73,7 +75,10 @@ public final class ArcUtilities {
             startAngle = temp;
         }
 
-        return new EllipticalArc2D( centerX, centerY, radius, startAngle, endAngle );
+        return new EllipticalArc2D( centerX,
+                                    centerY,
+                                    radius,
+                                    startAngle,
+                                    endAngle );
     }
-
 }// class ArcUtilities

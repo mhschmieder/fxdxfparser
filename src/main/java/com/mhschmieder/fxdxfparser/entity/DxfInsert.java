@@ -40,6 +40,7 @@ import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
 import com.mhschmieder.jcommons.lang.NumberUtilities;
+
 import javafx.scene.transform.Affine;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
@@ -72,6 +73,53 @@ public class DxfInsert extends DxfEntity implements DxfEntityContainer {
     }
 
     @Override
+    @SuppressWarnings( "nls" )
+    protected void parseEntityProperties( final DxfPairContainer pc ) {
+        // _attributes = null;
+
+        _blockName = pc.getValue( DxfGroupCodes.CODE2 );
+
+        final double rotationAngleDegrees
+                =
+                NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE50,
+                                                            "0" ) );
+
+        final double insertX = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE10 ) );
+        final double insertY = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE20 ) );
+
+        final double scaleX = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE41,
+                "1" ) );
+        final double scaleY = NumberUtilities.parseDouble( pc.getValue(
+                DxfGroupCodes.CODE42,
+                "1" ) );
+
+        // Cambio sentido
+        final Rotate rotate = new Rotate( rotationAngleDegrees % 360d );
+
+        // Escalado
+        final Scale scale = new Scale( scaleX, scaleY );
+
+        // Traslacion
+        final Translate translate = new Translate( insertX, insertY );
+
+        // NOTE: We cannot translate as a concatenation at this point, so we
+        // set those matrix values directly after appending scale to rotation.
+        _blockTransform = new Affine( rotate );
+        _blockTransform.append( scale );
+        _blockTransform.setTx( translate.getX() );
+        _blockTransform.setTy( translate.getY() );
+        _blockTransform.setTz( 0.0d );
+
+        // Cache the inverse magnitude of the scaling, to apply to strokes.
+        // NOTE: We take the average, in case x-scaling and y-scaling differ.
+        final double averageScaleFactor = 0.5d * ( scaleX + scaleY );
+        _strokeScale = 1.0d / averageScaleFactor;
+    }
+
+    @Override
     public boolean convertToFxShapes( final DxfShapeContainer dxfShapeContainer,
                                       final Affine transform,
                                       final double strokeScale ) {
@@ -100,48 +148,10 @@ public class DxfInsert extends DxfEntity implements DxfEntityContainer {
         // block.setCurrentAttributes( _attributes );
 
         final double totalStrokeScale = _strokeScale * strokeScale;
-        block.convertToFxShapes( dxfShapeContainer, resultante, totalStrokeScale );
+        block.convertToFxShapes( dxfShapeContainer,
+                                 resultante,
+                                 totalStrokeScale );
 
         return true;
     }
-
-    @Override
-    @SuppressWarnings("nls")
-    protected void parseEntityProperties( final DxfPairContainer pc ) {
-        // _attributes = null;
-
-        _blockName = pc.getValue( DxfGroupCodes.CODE2 );
-
-        final double rotationAngleDegrees = NumberUtilities
-                .parseDouble( pc.getValue( DxfGroupCodes.CODE50, "0" ) );
-
-        final double insertX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE10 ) );
-        final double insertY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE20 ) );
-
-        final double scaleX = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE41, "1" ) );
-        final double scaleY = NumberUtilities.parseDouble( pc.getValue( DxfGroupCodes.CODE42, "1" ) );
-
-        // Cambio sentido
-        final Rotate rotate = new Rotate( rotationAngleDegrees % 360d );
-
-        // Escalado
-        final Scale scale = new Scale( scaleX, scaleY );
-
-        // Traslacion
-        final Translate translate = new Translate( insertX, insertY );
-
-        // NOTE: We cannot translate as a concatenation at this point, so we
-        // set those matrix values directly after appending scale to rotation.
-        _blockTransform = new Affine( rotate );
-        _blockTransform.append( scale );
-        _blockTransform.setTx( translate.getX() );
-        _blockTransform.setTy( translate.getY() );
-        _blockTransform.setTz( 0.0d );
-
-        // Cache the inverse magnitude of the scaling, to apply to strokes.
-        // NOTE: We take the average, in case x-scaling and y-scaling differ.
-        final double averageScaleFactor = 0.5d * ( scaleX + scaleY );
-        _strokeScale = 1.0d / averageScaleFactor;
-    }
-
 }// class DxfInsert

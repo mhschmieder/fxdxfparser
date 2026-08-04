@@ -83,58 +83,58 @@ public enum EntityType {
     WIPEOUT,
     XLINE;
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     public static EntityType canonicalValueOf( final String entityType ) {
         // NOTE: Java does not allow symbols to start with anything other than
         // letters, so we have to invert the spelling of entities that start
         // with numbers in DXF.
-        final String canonicalEntityType = entityType.toUpperCase( Locale.ENGLISH );
-        
+        final String canonicalEntityType
+                = entityType.toUpperCase( Locale.ENGLISH );
+
         EntityType entityTypeValue = UNRECOGNIZED_ENTITY;
-        
+
         switch ( canonicalEntityType ) {
-        case "3DFACE":
-            entityTypeValue = FACE3D;
-            break;
-        case "3DSOLID":
-            entityTypeValue = SOLID3D;
-            break;
-        // $CASES-OMITTED$
-        default:
-            try {
-                entityTypeValue = valueOf( canonicalEntityType );
-            }
-            catch ( final Exception e ) {
-                e.printStackTrace();
-                entityTypeValue = UNRECOGNIZED_ENTITY;
-            }
+            case "3DFACE":
+                entityTypeValue = FACE3D;
+                break;
+            case "3DSOLID":
+                entityTypeValue = SOLID3D;
+                break;
+            // $CASES-OMITTED$
+            default:
+                try {
+                    entityTypeValue = valueOf( canonicalEntityType );
+                }
+                catch ( final Exception e ) {
+                    e.printStackTrace();
+                    entityTypeValue = UNRECOGNIZED_ENTITY;
+                }
         }
-        
+
         return entityTypeValue;
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     @Override
     public String toString() {
         // NOTE: Java does not allow symbols to start with anything other than
         // letters, so we have to invert the spelling of entities that start
         // with numbers in DXF.
         String stringName = null;
-        
+
         switch ( this ) {
-        case FACE3D:
-            stringName = "3DFACE";
-            break;
-        case SOLID3D:
-            stringName = "3DSOLID";
-            break;
-        // $CASES-OMITTED$
-        default:
-            stringName = super.toString();
-            break;
+            case FACE3D:
+                stringName = "3DFACE";
+                break;
+            case SOLID3D:
+                stringName = "3DSOLID";
+                break;
+            // $CASES-OMITTED$
+            default:
+                stringName = super.toString();
+                break;
         }
-        
+
         return stringName;
     }
-
 }// enum EntityType

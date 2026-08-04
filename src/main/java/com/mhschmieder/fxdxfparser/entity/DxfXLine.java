@@ -36,12 +36,13 @@ import com.mhschmieder.fxdxfparser.reader.DxfPairContainer;
 import com.mhschmieder.fxdxfparser.reader.DxfReaderException;
 import com.mhschmieder.fxdxfparser.reader.EntityType;
 import com.mhschmieder.fxdxfparser.structure.DxfDocument;
+
+import java.util.Collection;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.transform.Affine;
-
-import java.util.Collection;
 
 public class DxfXLine extends DxfRay {
 
@@ -72,15 +73,21 @@ public class DxfXLine extends DxfRay {
         final Color color = getColor();
         final DxfLineType lineType = getLineType();
 
-        final Line line = new Line( startPointX, startPointY, endPointX, endPointY );
+        final Line line = new Line( startPointX,
+                                    startPointY,
+                                    endPointX,
+                                    endPointY );
 
         line.getTransforms().add( transform );
         line.setStroke( color );
 
         if ( ( lineType != null ) && !lineType.isContinuous() ) {
-            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale() * _lineTypeScale;
-            final Collection< Double > dashArrayCandidate = lineType.makeDashArray( lineTypeScale );
-            final ObservableList< Double > dashArray = line.getStrokeDashArray();
+            final double lineTypeScale = _dxfDoc.getGlobalLineTypeScale()
+                                         * _lineTypeScale;
+            final Collection< Double > dashArrayCandidate
+                    = lineType.makeDashArray( lineTypeScale );
+            final ObservableList< Double > dashArray
+                    = line.getStrokeDashArray();
             dashArray.setAll( dashArrayCandidate );
         }
 
@@ -88,5 +95,4 @@ public class DxfXLine extends DxfRay {
 
         return true;
     }
-
 }// class DxfXLine

@@ -34,8 +34,8 @@ public final class PropertyOverriding {
 
     private static final int COLOR_FLAG = 1;
 
-    private int              _flags;
-    private int              _colorIndex;
+    private int _flags;
+    private int _colorIndex;
 
     public boolean flagColor() {
         return ( _flags & COLOR_FLAG ) != 0;
@@ -50,5 +50,4 @@ public final class PropertyOverriding {
 
         _flags = _flags | COLOR_FLAG;
     }
-
 }// class PropertyOverriding

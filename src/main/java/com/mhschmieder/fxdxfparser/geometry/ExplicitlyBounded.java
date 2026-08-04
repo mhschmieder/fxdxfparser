@@ -42,5 +42,4 @@ public interface ExplicitlyBounded {
     Rectangle2D getExplicitBounds();
 
     boolean hasExplicitBounds();
-
 }// interface ExplicitlyBounded

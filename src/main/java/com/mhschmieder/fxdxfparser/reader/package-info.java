@@ -30,9 +30,5 @@
  */
 /**
  * This package is the high-level group code reader for fxdxfparser.
- *
- * @version 1.0
- *
- * @author Mark Schmieder
  */
 package com.mhschmieder.fxdxfparser.reader;

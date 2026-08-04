@@ -40,14 +40,6 @@ public final class PolyVertex extends Vertex {
 
     public PolyVertex( final double x,
                        final double y,
-                       final double startWidth,
-                       final double endWidth,
-                       final double bulge ) {
-        this( x, y, 0.0d, startWidth, endWidth, bulge );
-    }
-
-    public PolyVertex( final double x,
-                       final double y,
                        final double z,
                        final double startWidth,
                        final double endWidth,
@@ -58,7 +50,16 @@ public final class PolyVertex extends Vertex {
         _bulge = bulge;
     }
 
-    public EllipticalArc2D getArc( final double x2, final double y2 ) {
+    public PolyVertex( final double x,
+                       final double y,
+                       final double startWidth,
+                       final double endWidth,
+                       final double bulge ) {
+        this( x, y, 0.0d, startWidth, endWidth, bulge );
+    }
+
+    public EllipticalArc2D getArc( final double x2,
+                                   final double y2 ) {
         return ArcUtilities.getArc( _bulge, _x, _y, x2, y2 );
     }
 
@@ -70,12 +71,11 @@ public final class PolyVertex extends Vertex {
         _bulge = bulge;
     }
 
-    @SuppressWarnings("nls")
+    @SuppressWarnings( "nls" )
     @Override
     public String toString() {
         final String vertexVerbose = super.toString();
         final String polyVertexVerbose = vertexVerbose + " " + _bulge;
         return polyVertexVerbose;
     }
-
 }// class PolyVertex
