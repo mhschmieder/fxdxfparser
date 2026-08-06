@@ -38,6 +38,7 @@ package com.mhschmieder.fxdxfparser.reader;
  * @version 0.1
  */
 public class DxfReaderException extends Exception {
+
     /**
      *
      */

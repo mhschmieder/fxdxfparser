@@ -50,13 +50,13 @@ public final class DxfDocument {
      * Nombre del bloque "espacio modelo"
      */
     public static final String MODEL_BLOCK = "*MODEL_SPACE";
-            //$NON-NLS-1$
+    //$NON-NLS-1$
 
     /**
      * Nombre del bloque "espacio papel"
      */
     public static final String PAPER_BLOCK = "*PAPER_SPACE";
-            //$NON-NLS-1$
+    //$NON-NLS-1$
 
     // Encapsulation of status of read and unread entities.
     public final DxfStatus _dxfStatus;

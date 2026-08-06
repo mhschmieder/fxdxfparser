@@ -185,6 +185,7 @@ public class DxfPairContainer {
     }
 
     private class DxfPairContainerIterator implements Iterator< String > {
+
         final Iterator< DxfPair > _iter;
         private final int _keyRef;
         private String _valueRef;
